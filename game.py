@@ -9,7 +9,7 @@ class Game:
         self.echiquier = Echiquier(screen)
         self.screen = screen
         for i in range(8):
-            self.ajout_pion(i * screen.get_height() / 8)
+            self.ajout_pion(i,1)
 
     def update(self):
         self.update_echiquier()
@@ -18,8 +18,10 @@ class Game:
         for elem in self.all_piece:
             self.screen.blit(elem.image,elem.rect)
 
-    def ajout_pion(self,nb):
-        self.all_piece.add(Pion(nb,self.screen.get_height()/8,self.screen))
+    def ajout_pion(self,x,y):
+        pion = Pion(x,y,self.screen)
+        self.echiquier.jeu[x][y].piece = pion
+        self.all_piece.add(pion)
 
     def update_echiquier(self):
         jeu = self.echiquier.jeu
