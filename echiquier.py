@@ -8,7 +8,7 @@ class Echiquier:
         self.jeu = [[None for i in range(8)] for j in range(8)]
         for i in range(8):
             for j in range(8):
-                case = Case(j, i, self.screen)
+                case = Case(j, i, self.screen,self)
                 self.jeu[j][i] = case
                 self.all_case.append(case)
 

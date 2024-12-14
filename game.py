@@ -8,6 +8,7 @@ class Game:
         self.all_piece = pygame.sprite.Group()
         self.echiquier = Echiquier(screen)
         self.screen = screen
+        self.piece_selectione = None
         for i in range(8):
             self.ajout_pion(i,1)
 

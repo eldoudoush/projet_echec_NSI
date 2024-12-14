@@ -24,11 +24,18 @@ while running:
             pygame.quit()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
-            click_case = (int(event.pos[0]//(screen.get_height()/8)),int(event.pos[1]//(screen.get_height()/8)))
-            print(click_case)
-            for elem in ga.echiquier.all_case:
-                if elem.coordone == click_case:
-                    print(elem.piece)
+            click_case = (
+            int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
+            if ga.piece_selectione == None:
+                for elem in ga.echiquier.all_case:
+                    if elem.coordone == click_case:
+                        print(elem.piece)
+                        ga.piece_selectione = elem.piece
+            else:
+                for elem in ga.echiquier.all_case:
+                    if elem.coordone == click_case:
+                        if elem.piece == None:
+                            elem.changer_pion(ga.piece_selectione)
 
         elif event.type == pygame.KEYDOWN :
 
@@ -43,3 +50,6 @@ while running:
                 ga.echiquier.jeu[0][0].changer_pion(ga.echiquier.jeu[1][1].piece)
             elif event.key == pygame.K_q:
                 ga.echiquier.jeu[1][1].changer_pion(ga.echiquier.jeu[0][0].piece)
+            elif event.key == pygame.K_z:
+                ga.piece_selectione = None
+                print('pion deselectione')
