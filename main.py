@@ -1,17 +1,30 @@
+from socket import fromfd
 from time import sleep
-
+from game import Game
 import pygame
 
-screen = pygame.display.set_mode((1420,1080))
+
+screen = pygame.display.set_mode((500,400))
 
 running = True
 
-while running:
 
+ga = Game(screen)
+
+
+
+while running:
+    ga.update()
+    pygame.display.flip()
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
-
-    sleep(0.005)
+        if event.type == pygame.KEYDOWN :
+            if event.key == pygame.K_SPACE:
+                screen = pygame.display.set_mode((1550, 790))
+                ga = Game(screen)
+            if event.key == pygame.K_e:
+                screen = pygame.display.set_mode((500,400))
+                ga = Game(screen)
 
