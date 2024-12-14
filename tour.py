@@ -21,3 +21,4 @@ class Tour(pygame.sprite.Sprite):
     def maj_position(self):
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
+

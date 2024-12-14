@@ -4,7 +4,7 @@ from game import Game
 import pygame
 
 
-screen = pygame.display.set_mode((500,400))
+screen = pygame.display.set_mode((1000,600))
 
 running = True
 
@@ -23,9 +23,14 @@ while running:
             running = False
             pygame.quit()
 
+
+
+
+
         elif event.type == pygame.MOUSEBUTTONDOWN:
             click_case = (
             int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
+            print(click_case)
             if ga.piece_selectione == None:
                 for elem in ga.echiquier.all_case:
                     if elem.coordone == click_case:

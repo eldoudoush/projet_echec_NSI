@@ -9,6 +9,7 @@ class Game:
         self.echiquier = Echiquier(screen,self)
         self.screen = screen
         self.piece_selectione = None
+        self.couleur_joueur = None
 
     def update(self):
         self.update_echiquier()
