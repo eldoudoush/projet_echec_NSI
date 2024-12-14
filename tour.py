@@ -17,8 +17,12 @@ class Tour(pygame.sprite.Sprite):
         self.rect.x = self.taille_case*x
         self.rect.y = self.taille_case*y
         self.coordone = (x,y)
+        self.coup_possible = []
 
     def maj_position(self):
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
+
+    def coup_possible(self,echiquier):
+        x,y = self.coordone
 

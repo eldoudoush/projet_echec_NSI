@@ -10,6 +10,7 @@ class Game:
         self.screen = screen
         self.piece_selectione = None
         self.couleur_joueur = None
+        self.en_menu = True
 
     def update(self):
         self.update_echiquier()

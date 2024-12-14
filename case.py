@@ -25,6 +25,7 @@ class Case:
 
 
 
+
          piece.coordone = self.coordone
          piece.maj_position()
 
