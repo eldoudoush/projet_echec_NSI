@@ -10,7 +10,7 @@ class Game:
         self.echiquier = Echiquier(screen,self)
         self.screen = screen
         self.piece_selectione = None
-        self.couleur_joueur = None
+        self.couleur_joueur = 'blanc'
         self.en_menu = True
         self.premouv = pygame.sprite.Group()
         self.scene_droite = SceneDroite(screen)
@@ -32,6 +32,13 @@ class Game:
             for elem in self.all_piece:
                 self.screen.blit(elem.image,elem.rect)
 
+    def changer_couleur(self):
+        if self.couleur_joueur == 'blanc':
+            self.couleur_joueur = 'noir'
+        elif self.couleur_joueur == 'noir':
+            self.couleur_joueur = 'blanc'
+        else:
+            print('quelque chose est arrivé')
 
     def update_echiquier(self):
         jeu = self.echiquier.jeu

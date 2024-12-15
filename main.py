@@ -16,18 +16,19 @@ ga = Game(screen)
 
 
 while running:
+    #event pygame
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
 
-        elif event.type == passesecone:
+        elif event.type == passesecone: #ce declanche chaque second
             if ga.couleur_joueur == 'noir':
                 ga.scene_droite.temp_noir_reduction()
             elif ga.couleur_joueur == 'blanc':
                 ga.scene_droite.temp_blanc_reduction()
 
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
             if ga.en_menu:
                 if ga.ecran_accueil.play_button_rect.collidepoint(event.pos):
                     ga.en_menu = False
@@ -37,8 +38,8 @@ while running:
                 int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
                 print(click_case)
                 if ga.piece_selectione is None:
-                    for elem in ga.echiquier.all_case:
-                        if elem.coordone == click_case:
+                    for elem in ga.echiquier.all_case :
+                        if elem.coordone == click_case and not elem.piece is None and elem.piece.color == ga.couleur_joueur:
                             print(elem.piece)
                             ga.changer_piece_selectionner(elem.piece)
                 else:
@@ -46,8 +47,9 @@ while running:
                         if elem.coordone == click_case:
                             if elem.piece is None:
                                 elem.changer_pion(ga.piece_selectione)
+                                ga.changer_couleur()
 
-        elif event.type == pygame.KEYDOWN :
+        elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
             if event.key == pygame.K_SPACE:
                 screen = pygame.display.set_mode((1550, 790))
@@ -71,14 +73,10 @@ while running:
                     ga.couleur_joueur = 'noir'
 
 
+    ga.update() #création de tout l'affichage graphique
+
+    pygame.display.flip() #projection de tout l'affichage graphique
 
 
-
-
-    ga.update()
-
-    pygame.display.flip()
-
-
-    clock.tick(60)
+    clock.tick(60) # frame rate (60 fps ici)
 
