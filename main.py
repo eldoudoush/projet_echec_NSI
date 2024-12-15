@@ -22,13 +22,14 @@ ecran_accueil = Accueil()
 
 while running:
     if ga.en_menu :
-        screen.fill((42, 206, 166))
+        screen.fill((167, 4, 159))
         #pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
         screen.blit(ecran_accueil.texte_surface, ecran_accueil.texte_surface_rect)
         screen.blit(ecran_accueil.play_button,ecran_accueil.play_button_rect)
 
 
     else:
+        screen.fill((0,0,0))
         ga.update()
 
     pygame.display.flip()
@@ -57,7 +58,7 @@ while running:
                     for elem in ga.echiquier.all_case:
                         if elem.coordone == click_case:
                             print(elem.piece)
-                            ga.piece_selectione = elem.piece
+                            ga.changer_piece_selectionner(elem.piece)
                 else:
                     for elem in ga.echiquier.all_case:
                         if elem.coordone == click_case:
