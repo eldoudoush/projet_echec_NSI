@@ -1,8 +1,5 @@
-from socket import fromfd
-from time import sleep
 from game import Game
 import pygame
-import pygame.freetype
 from accueil import Accueil
 
 pygame.init()
@@ -11,50 +8,35 @@ screen = pygame.display.set_mode((1000,600))
 
 running = True
 
-
-
+passesecone = pygame.USEREVENT + 1
 clock = pygame.time.Clock()
-
+pygame.time.set_timer(passesecone, 1000)
 
 ga = Game(screen)
-ecran_accueil = Accueil()
 
 
 while running:
-    if ga.en_menu :
-        screen.fill((167, 4, 159))
-        #pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
-        screen.blit(ecran_accueil.texte_surface, ecran_accueil.texte_surface_rect)
-        screen.blit(ecran_accueil.play_button,ecran_accueil.play_button_rect)
-
-
-    else:
-        screen.fill((0,0,0))
-        ga.update()
-
-    pygame.display.flip()
-
-
-
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
             pygame.quit()
 
-
-
-
+        elif event.type == passesecone:
+            if ga.couleur_joueur == 'noir':
+                ga.scene_droite.temp_noir_reduction()
+            elif ga.couleur_joueur == 'blanc':
+                ga.scene_droite.temp_blanc_reduction()
 
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if ga.en_menu:
-                if ecran_accueil.play_button_rect.collidepoint(event.pos):
+                if ga.ecran_accueil.play_button_rect.collidepoint(event.pos):
                     ga.en_menu = False
 
             if not ga.en_menu :
                 click_case = (
                 int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
                 print(click_case)
-                if ga.piece_selectione == None:
+                if ga.piece_selectione is None:
                     for elem in ga.echiquier.all_case:
                         if elem.coordone == click_case:
                             print(elem.piece)
@@ -62,7 +44,7 @@ while running:
                 else:
                     for elem in ga.echiquier.all_case:
                         if elem.coordone == click_case:
-                            if elem.piece == None:
+                            if elem.piece is None:
                                 elem.changer_pion(ga.piece_selectione)
 
         elif event.type == pygame.KEYDOWN :
@@ -83,5 +65,20 @@ while running:
                 print('pion deselectione')
 
             elif event.key == pygame.K_h:
-                print('hihi')
+                if ga.couleur_joueur == 'noir':
+                    ga.couleur_joueur = 'blanc'
+                else:
+                    ga.couleur_joueur = 'noir'
+
+
+
+
+
+
+    ga.update()
+
+    pygame.display.flip()
+
+
+    clock.tick(60)
 
