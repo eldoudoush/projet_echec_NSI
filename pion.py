@@ -11,10 +11,11 @@ class Pion(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.coup = [(1,1)]
         if color == 'blanc':
-            self.image = pygame.image.load('piece/pion_blanc.png')
+            self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
         else:
-            self.image = pygame.image.load('piece/pion_noir.png')
+            self.image = pygame.image.load('pieces_echecs/pion_noir.png')
         self.image = pygame.transform.scale(self.image, (self.taille_case, self.taille_case))
         self.rect = self.image.get_rect()
         self.rect.x = self.taille_case*x
