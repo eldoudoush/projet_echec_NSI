@@ -1,5 +1,6 @@
 from game import Game
 import pygame
+from accueil import Accueil
 
 pygame.init()
 # pygame.time.get_ticks pour avoir le nombre de tick ecoulé
@@ -46,7 +47,7 @@ while running:
                         if elem.coordone == click_case:
                             if elem.piece is None:
                                 elem.changer_pion(ga.piece_selectione)
-                                ga.tour_suivant()
+                                ga.changer_couleur()
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
