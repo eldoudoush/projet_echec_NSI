@@ -15,8 +15,8 @@ class Accueil:
          self.play_button_rect.x = screen.get_width()/8
          self.play_button_rect.y = screen.get_height()/4
 
-         self.texte = pygame.font.Font(None,self.screen_width//20)
-         self.texte_surface = self.texte.render("jeu d'échec de julian et Maxence !", True, (0, 0, 0))
+         self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//30)
+         self.texte_surface = self.font.render("jeu d'echec de julian et Maxence !", True, (0, 0, 0))
          self.texte_surface_rect = self.texte_surface.get_rect()
          self.texte_surface_rect.x = screen.get_width()/8
          self.texte_surface_rect.y = screen.get_height()/4

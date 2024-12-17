@@ -3,6 +3,7 @@ from echiquier import Echiquier
 from point import Point
 from scene_droite import SceneDroite
 from accueil import Accueil
+import random
 
 class Game:
     def __init__(self,screen):
@@ -13,12 +14,13 @@ class Game:
         self.couleur_joueur = 'blanc'
         self.en_menu = True
         self.premouv = pygame.sprite.Group()
-        self.scene_droite = SceneDroite(screen)
+        self.scene_droite = SceneDroite(screen,self)
         self.ecran_accueil = Accueil(self.screen)
+        self.rgb = (0,0,0)
 
     def update(self):
         if self.en_menu:
-            self.screen.fill((167, 4, 159))
+            self.screen.fill(self.rgb)
             # pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
             self.screen.blit(self.ecran_accueil.texte_surface, self.ecran_accueil.texte_surface_rect)
             self.screen.blit(self.ecran_accueil.play_button, self.ecran_accueil.play_button_rect)

@@ -17,7 +17,15 @@ class Fou(pygame.sprite.Sprite):
         self.rect.x = self.taille_case*x
         self.rect.y = self.taille_case*y
         self.coordone = (x,y)
+        self.x = x
+        self.y = y
+        self.coup = []
 
     def maj_position(self):
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
+
+    """def coup_possible(self):
+        for i in range(self.x):
+            
+        for i in range(self.x,8):"""

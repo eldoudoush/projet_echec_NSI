@@ -3,20 +3,24 @@ import pygame
 
 class SceneDroite:
 
-    def __init__(self,screen):
+    def __init__(self,screen,game):
+
+        self.game = game
         self.screen = screen
         self.screen_height = screen.get_height()
         self.origine = (self.screen_height,0)
         self.width = self.screen.get_width() - self.screen_height
         self.pos_blanc = (self.screen_height+((1/8)*self.width),self.screen_height/8)
-        self.pos_noir = (self.screen_height+((6/8)*self.width),self.screen_height/8)
+        self.pos_noir = (self.screen_height+((5/8)*self.width),self.screen_height/8)
         self.timer_noir = 30*60
         self.timer_blanc = 30*60
         self.timer_noir_minute = ''
         self.timer_blanc_minute = ''
         self.coup_joue_blanc = []
+        self.piece_blanc_manger = []
         self.coup_joue_noir = []
-        self.font = pygame.font.SysFont(None, self.width//8)
+        self.piece_noir_manger = []
+        self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.width//14)
 
     def temp_blanc_reduction(self):
         self.timer_blanc -= 1
