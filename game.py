@@ -18,12 +18,12 @@ class Game:
 
     def update(self):
         if self.en_menu:
-            self.screen.fill((167, 4, 159))
+            self.screen.fill((35, 83, 184))
             # pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
             self.screen.blit(self.ecran_accueil.texte_surface, self.ecran_accueil.texte_surface_rect)
             self.screen.blit(self.ecran_accueil.play_button, self.ecran_accueil.play_button_rect)
         else:
-            self.screen.fill((0, 0, 0))
+            self.screen.fill((35, 83, 184))
             self.update_echiquier()
             self.scene_droite.update()
             for elem in self.premouv:
@@ -32,7 +32,7 @@ class Game:
             for elem in self.all_piece:
                 self.screen.blit(elem.image,elem.rect)
 
-    def changer_couleur(self):
+    def tour_suivant(self):
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
         elif self.couleur_joueur == 'noir':
