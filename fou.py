@@ -25,7 +25,27 @@ class Fou(pygame.sprite.Sprite):
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
-    """def coup_possible(self):
-        for i in range(self.x):
-            
-        for i in range(self.x,8):"""
+    """
+    def coup_possible(self):
+        x = 0
+        y = 0
+        for i in range (self.x,8):
+            self.coup.append((i,y+1))
+            if présence sur la case[i][y+1]:
+                break()
+                
+        for i in range (0,self.x):
+            self.coup.append((i,y-1))
+            if présence sur la case[i][y-1]:
+                break()
+                
+        for i in range (0,self.y):
+            self.coup.append((x-1,i))
+            if présence sur la case[x-1][i]:
+                break()
+                
+        for i in range (self.y,8):
+            self.coup.append((x+1,i))
+            if présence sur la case[x+1][i]:
+                break()
+    """
