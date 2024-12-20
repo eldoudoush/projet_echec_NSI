@@ -26,15 +26,14 @@ class Tour(pygame.sprite.Sprite):
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,echiquier):
-        '''
         for i in range (8):
             self.coup.append(i,y)
-            if présence sur la case[i][y]:
+            if echiquier.jeu[i][y]:
                 break()
         for j in range (8):
             self.coup.append(x,j)
-            if présence sur la case[x][j]:
+            if echiquier.jeu[x][j]:
                 break()
         return self.coup
-        '''
+        
     
