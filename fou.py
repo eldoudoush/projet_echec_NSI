@@ -32,21 +32,21 @@ class Fou(pygame.sprite.Sprite):
         for i in range (self.x,8):
             self.coup.append((i,y+1))
             if echiquier.jeu[i][y+1]!=None:
-                break()
+                break
                 
         for i in range (0,self.x):
             self.coup.append((i,y-1))
             if echiquier.jeu[i][y-1]!=None:
-                break()
+                break
                 
         for i in range (0,self.y):
             self.coup.append((x-1,i))
             if echiquier.jeu[x-1][i]!=None:
-                break()
+                break
                 
         for i in range (self.y,8):
             self.coup.append((x+1,i))
             if echiquier.jeu[x+1][i]!=None:
-                break()
+                break
         return self.coup
     

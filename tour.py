@@ -27,13 +27,13 @@ class Tour(pygame.sprite.Sprite):
 
     def coup_possible(self,echiquier):
         for i in range (8):
-            self.coup.append(i,y)
-            if echiquier.jeu[i][y]!=None:
-                break()
-        for j in range (8):
-            self.coup.append(x,j)
-            if echiquier.jeu[x][j]!=None:
-                break()
+            self.coup.append(i,self.y)
+            if echiquier.jeu[i][self.y]!=None:
+                break
+        for j in range(8):
+            self.coup.append(self.x,j)
+            if echiquier.jeu[self.x][j]!=None:
+                break
         return self.coup
         
     
