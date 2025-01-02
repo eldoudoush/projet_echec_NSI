@@ -1,6 +1,7 @@
 from game import Game
 import pygame
 from accueil import Accueil
+import random
 
 pygame.init()
 # pygame.time.get_ticks pour avoir le nombre de tick ecoulé
@@ -11,7 +12,8 @@ running = True
 passesecone = pygame.USEREVENT + 1
 clock = pygame.time.Clock()
 pygame.time.set_timer(passesecone, 1000)
-
+changecouleur = pygame.USEREVENT + 2
+pygame.time.set_timer(changecouleur, 250)
 ga = Game(screen)
 
 
@@ -23,10 +25,14 @@ while running:
             pygame.quit()
 
         elif event.type == passesecone: #ce declanche chaque second
-            if ga.couleur_joueur == 'noir':
-                ga.scene_droite.temp_noir_reduction()
-            elif ga.couleur_joueur == 'blanc':
-                ga.scene_droite.temp_blanc_reduction()
+            if not ga.en_menu :
+                if ga.couleur_joueur == 'noir':
+                    ga.scene_droite.temp_noir_reduction()
+                elif ga.couleur_joueur == 'blanc':
+                    ga.scene_droite.temp_blanc_reduction()
+
+        elif event.type == changecouleur:
+            ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
             if ga.en_menu:
@@ -48,11 +54,16 @@ while running:
                             if elem.piece is None:
                                 elem.changer_pion(ga.piece_selectione)
                                 ga.changer_couleur()
+                                ga.changer_piece_selectionner(None)
+                            else:
+                                elem.manger_pion(ga.piece_selectione)
+                                ga.changer_couleur()
+                                ga.changer_piece_selectionner(None)
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
             if event.key == pygame.K_SPACE:
-                screen = pygame.display.set_mode((1550, 790))
+                screen = pygame.display.set_mode((0, 0),pygame.FULLSCREEN)
                 ga = Game(screen)
 
             elif event.key == pygame.K_e:
