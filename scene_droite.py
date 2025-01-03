@@ -38,6 +38,16 @@ class SceneDroite:
         text_noir = self.timer_noir_minute
         self.screen.blit(self.font.render(text_blanc, True, (255,255,255)), self.pos_blanc)
         self.screen.blit(self.font.render(text_noir, True, (255, 255, 255)), self.pos_noir)
+        self.afficher_piece_capturer()
+
+    def afficher_piece_capturer(self):
+        L_piece = self.piece_blanc_manger
+        for i in range(len(L_piece)):
+            L_piece[i].rect.x ,L_piece[i].rect.y= self.origine[0]+(i)*L_piece[i].rect[2],500
+
+
+        for elem in L_piece:
+            self.screen.blit(elem.image, elem.rect)
 
 """import pygame
 pygame.init()
