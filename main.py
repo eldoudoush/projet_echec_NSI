@@ -4,7 +4,7 @@ from accueil import Accueil
 import random
 
 pygame.init()
-# pygame.time.get_ticks pour avoir le nombre de tick ecoulé
+# pygame.time.get_ticks pour avoir le nombre de tick ecoulé depuis lancement de la fenetre
 screen = pygame.display.set_mode((1000,600))
 
 running = True
@@ -31,7 +31,7 @@ while running:
                 elif ga.couleur_joueur == 'blanc':
                     ga.scene_droite.temp_blanc_reduction()
 
-        elif event.type == changecouleur:
+        elif event.type == changecouleur: # ce declanche chaque quar second
             ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri

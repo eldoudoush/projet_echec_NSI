@@ -48,11 +48,14 @@ class Game:
                 pygame.draw.rect(self.screen,jeu[j][i].color,jeu[j][i].rect)
 
     def afficher_deplacement_possible(self):
+        self.piece_selectione.coup_possible()
         for elem in self.piece_selectione.coup:
             x, y = elem
-            if self.echiquier.jeu[y][x].piece is None:
+            if self.echiquier.jeu[x][y].piece is None:
                 point = Point(x,y,self.screen,'noir')
             else:
+                print(self.echiquier.jeu[y][x].piece)
+                print(x,y)
                 point = Point(x, y, self.screen,'rouge')
 
             self.premouv.add(point)

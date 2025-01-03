@@ -35,6 +35,9 @@ class Case:
         for elem in self.echiquier.all_case:
             if piece.coordone == elem.coordone:
                 elem.piece = None
+        """self.echiquier.game.scene_droite.append(piece.coordone)
+        self.echiquier.game.scene_droite.append(piece.piece)
+        self.echiquier.game.scene_droite.append()"""
         piece.coordone = self.coordone
         piece.maj_position()
 

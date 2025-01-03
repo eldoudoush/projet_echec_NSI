@@ -4,6 +4,7 @@ class Cheval(pygame.sprite.Sprite):
 
     def __init__(self,x,y,screen,color):
         super().__init__()
+        self.piece = 'cheval'
         self.screen = screen
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
