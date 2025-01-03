@@ -77,13 +77,15 @@ class Fou(pygame.sprite.Sprite):
         x = self.coordone[0]
         y = self.coordone[1]
         for i in range(x+1, 8):
-            if y + i - x > 7 or  y + i - x < 0:
+            if y + i - x > 7 or  y + i - x < 0 :
                 print('hors echiquier '+ str(y + i - x) )
                 break
             elif not self.echiquier.jeu[i][y + i - x].piece is None:
-                print("y'a un truc sur "+str(i)+' '+str(y + i - x) + '  ' + str(self.echiquier.jeu[i][y + i - x].piece))
-                self.coup.append((i, y + i - x))
-                break
+                if  self.echiquier.jeu[i][y + i - x].piece.color == self.color :
+                    break
+                else:
+                    self.coup.append((i, y + i - x))
+                    break
             else :
                 self.coup.append((i, y + i - x))
 
@@ -91,8 +93,11 @@ class Fou(pygame.sprite.Sprite):
             if  y - i + x > 7 or  y - i + x < 0 :
                 break
             elif not self.echiquier.jeu[i ][y-i+x].piece is None :
-                self.coup.append((i, y - i + x))
-                break
+                if self.echiquier.jeu[i ][y-i+x].piece.color == self.color :
+                    break
+                else:
+                    self.coup.append((i, y - i + x))
+                    break
             else:
                 self.coup.append((i, y - i + x))
 
@@ -100,26 +105,23 @@ class Fou(pygame.sprite.Sprite):
             if x - i + y > 7 or x - i + y < 0 :
                 break
             elif not self.echiquier.jeu[x - i + y][i].piece is None :
-                self.coup.append((x - i + y, i))
-                break
+                if self.echiquier.jeu[x - i + y][i].piece.color == self.color:
+                    break
+                else:
+                    self.coup.append((x - i + y, i))
+                    break
             else:
                 self.coup.append((x - i + y, i))
-
-        """for i in range(y+1, 8):
-            if x + i - y > 7 or x + i - y < 0:
-                break
-            elif not self.echiquier.jeu[x + i - y][i].piece is None :
-                self.coup.append((x + i - y, i))
-                break
-            else:
-                self.coup.append((x + i - y, i))"""
 
         for i in range(y-1,-1,-1):
-            if x + i - y > 7 or x + i - y < 0 :
+            if x + i - y > 7 or x + i - y < 0  :
                 break
             elif not self.echiquier.jeu[x + i - y][i].piece is None :
-                self.coup.append((x + i - y, i))
-                break
+                if self.echiquier.jeu[x + i - y][i].piece.color == self.color:
+                    break
+                else:
+                    self.coup.append((x + i - y, i))
+                    break
             else:
                 self.coup.append((x + i - y, i))
 
