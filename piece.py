@@ -89,6 +89,7 @@ class Fou(pygame.sprite.Sprite):
 
     def __init__(self,x,y, screen, color,echiquier):
         super().__init__()
+        self.piece = 'fou'
         self.echiquier = echiquier
         self.screen = screen
         self.screen_height = screen.get_height()

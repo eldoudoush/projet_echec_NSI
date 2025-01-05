@@ -49,21 +49,24 @@ while running:
                             print(elem.piece)
                             ga.changer_piece_selectionner(elem.piece)
                 else:
-                    for elem in ga.echiquier.all_case:
-                        if elem.coordone == click_case:
-                            if elem.piece is None:
-                                elem.changer_pion(ga.piece_selectione)
-                                ga.changer_couleur()
-                                if ga.piece_selectione.piece == 'pion' :
-                                    ga.piece_selectione.premier_coup = False
-                                ga.changer_piece_selectionner(None)
+                    if click_case in ga.piece_selectione.coup :
+                        for elem in ga.echiquier.all_case:
+                            if elem.coordone == click_case:
+                                if elem.piece is None:
+                                    elem.changer_pion(ga.piece_selectione)
+                                    ga.changer_couleur()
+                                    if ga.piece_selectione.piece == 'pion' :
+                                        ga.piece_selectione.premier_coup = False
+                                    ga.changer_piece_selectionner(None)
 
-                            else:
-                                elem.manger_pion(ga.piece_selectione)
-                                ga.changer_couleur()
-                                if ga.piece_selectione.piece == 'pion' :
-                                    ga.piece_selectione.premier_coup = False
-                                ga.changer_piece_selectionner(None)
+                                else:
+                                    elem.manger_pion(ga.piece_selectione)
+                                    ga.changer_couleur()
+                                    if ga.piece_selectione.piece == 'pion' :
+                                        ga.piece_selectione.premier_coup = False
+                                    ga.changer_piece_selectionner(None)
+                    else :
+                        ga.changer_piece_selectionner(None)
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
