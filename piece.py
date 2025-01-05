@@ -2,14 +2,14 @@ import pygame
 
 class Pion(pygame.sprite.Sprite):
 
-    def __init__(self,x,y,screen,color):
+    def __init__(self,x,y,screen,color,echiquier):
         super().__init__()
         self.piece = 'pion'
         self.screen = screen
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
-        self.coup = [(1,1)]
+        self.coup = []
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
         else:
@@ -19,10 +19,47 @@ class Pion(pygame.sprite.Sprite):
         self.rect.x = self.taille_case*x
         self.rect.y = self.taille_case*y
         self.coordone = (x,y)
+        self.premier_coup = True
+        self.echiquier = echiquier
 
     def maj_position(self):
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
+
+    def coup_possible(self):
+        self.coup.clear()
+        x = self.coordone[0]
+        y = self.coordone[1]
+        if self.color == 'blanc':
+            if self.premier_coup :
+                for i in range(1,3):
+                    if not self.echiquier.jeu[x][y - i].piece is None :
+                        break
+                    else :
+                        self.coup.append((x,y - i))
+            else:
+                if self.echiquier.jeu[x][y -1].piece is None:
+                    self.coup.append((x, y-1))
+            if not self.echiquier.jeu[x+1][y -1].piece is None and self.echiquier.jeu[x+1][y -1].piece.color != self.color :
+                self.coup.append((x+1, y - 1))
+            if not self.echiquier.jeu[x-1][y -1].piece is None and self.echiquier.jeu[x-1][y -1].piece.color != self.color:
+                self.coup.append((x-1, y - 1))
+
+        else :
+            if self.premier_coup:
+                for i in range(1,3):
+                    if not self.echiquier.jeu[x][y + i].piece is None :
+                        break
+                    else :
+                        self.coup.append((x,y + i))
+            else:
+                if self.echiquier.jeu[x][y +1].piece is None:
+                    self.coup.append((x, y+1))
+            if not self.echiquier.jeu[x+1][y +1].piece is None and self.echiquier.jeu[x+1][y +1].piece.color != self.color :
+                self.coup.append((x+1, y +1))
+            if not self.echiquier.jeu[x-1][y +1].piece is None and self.echiquier.jeu[x-1][y +1].piece.color != self.color:
+                self.coup.append((x-1, y +1))
+
 
 class Cheval(pygame.sprite.Sprite):
 

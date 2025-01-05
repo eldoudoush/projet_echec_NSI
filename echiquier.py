@@ -3,7 +3,7 @@ from tour import Tour
 from roi import Roi
 from cheval import Cheval
 from reine import Reine
-from pion import Pion
+from piece import Pion
 from piece import Fou
 
 class Echiquier:
@@ -23,8 +23,8 @@ class Echiquier:
     def création_piece(self):
 
         for i in range(8):
-            pion1 =Pion(i,1,self.screen,'noir')
-            pion2 =Pion(i, 6, self.screen, 'blanc')
+            pion1 =Pion(i,1,self.screen,'noir',self)
+            pion2 =Pion(i, 6, self.screen, 'blanc',self)
             self.game.all_piece.add(pion1)
             self.game.all_piece.add(pion2)
             self.jeu[i][1].piece = pion1

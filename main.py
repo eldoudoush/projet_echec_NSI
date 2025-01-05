@@ -54,10 +54,15 @@ while running:
                             if elem.piece is None:
                                 elem.changer_pion(ga.piece_selectione)
                                 ga.changer_couleur()
+                                if ga.piece_selectione.piece == 'pion' :
+                                    ga.piece_selectione.premier_coup = False
                                 ga.changer_piece_selectionner(None)
+
                             else:
                                 elem.manger_pion(ga.piece_selectione)
                                 ga.changer_couleur()
+                                if ga.piece_selectione.piece == 'pion' :
+                                    ga.piece_selectione.premier_coup = False
                                 ga.changer_piece_selectionner(None)
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
