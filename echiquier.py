@@ -3,8 +3,8 @@ from tour import Tour
 from roi import Roi
 from cheval import Cheval
 from reine import Reine
-from piece import Pion
-from piece import Fou
+from piece import Pion ,Fou
+
 
 class Echiquier:
     def __init__(self,screen,game):
