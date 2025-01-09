@@ -1,9 +1,7 @@
 from case import Case
-from tour import Tour
 from roi import Roi
 from cheval import Cheval
-from reine import Reine
-from piece import Pion ,Fou
+from piece import Pion ,Fou, Tour, Reine
 
 
 class Echiquier:
@@ -30,8 +28,8 @@ class Echiquier:
             self.jeu[i][1].piece = pion1
             self.jeu[i][6].piece = pion2
         for i in range(0,8,7):
-            tour1 = Tour(i,0,self.screen,'noir')
-            tour2 = Tour(i,7,self.screen,'blanc')
+            tour1 = Tour(i,0,self.screen,'noir',self)
+            tour2 = Tour(i,7,self.screen,'blanc',self)
             self.game.all_piece.add(tour1)
             self.game.all_piece.add(tour2)
             self.jeu[i][0].piece =tour1
@@ -57,8 +55,8 @@ class Echiquier:
         self.jeu[3][0].piece = roi1
         self.jeu[3][7].piece = roi2
 
-        reine1 = Reine(4, 0, self.screen, 'noir')
-        reine2 = Reine(4, 7, self.screen, 'blanc')
+        reine1 = Reine(4, 0, self.screen, 'noir',self)
+        reine2 = Reine(4, 7, self.screen, 'blanc',self)
         self.game.all_piece.add(reine1)
         self.game.all_piece.add(reine2)
         self.jeu[4][0].piece = reine1
