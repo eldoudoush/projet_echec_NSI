@@ -28,8 +28,10 @@ class Case:
     def manger_pion(self, piece):
         if self.piece.color == 'blanc':
             self.echiquier.game.scene_droite.piece_noir_manger.append(self.piece)
+            self.echiquier.game.piece_blanc.remove(self.piece)
         else:
             self.echiquier.game.scene_droite.piece_blanc_manger.append(self.piece)
+            self.echiquier.game.piece_noir.remove(self.piece)
         self.echiquier.game.all_piece.remove(self.piece)
         self.piece = piece
         for elem in self.echiquier.all_case:

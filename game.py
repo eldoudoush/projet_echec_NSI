@@ -84,24 +84,24 @@ class Game:
         if not self.piece_selectione is None :
             self.afficher_deplacement_possible()
 
-    def calcul_coup_blanc(self,roi_mouv=False):
+    def calcul_coup_blanc(self,roi_mouv=False,calcul=True):
         L = []
         for elem in self.piece_blanc:
             if elem.piece != 'roi' :
-                elem.coup_possible()
+                elem.coup_possible(detect_echec = calcul)
                 L += elem.coup
 
             elif elem.piece == 'roi' and roi_mouv :
                 elem.coup_possible(detect_echec = True)
         return set(L)
 
-    def calcul_coup_noir(self,roi_mouv=False):
+    def calcul_coup_noir(self,roi_mouv=False,calcul=True):
         L = []
         for elem in self.piece_noir:
-            if elem.piece != 'roi' :
-                elem.coup_possible()
+            if elem.piece != 'roi' and elem.peut_jouer :
+                elem.coup_possible(detect_echec = calcul)
                 L += elem.coup
-            elif elem.piece == 'roi' and roi_mouv :
+            elif elem.piece == 'roi' and roi_mouv and elem.peut_jouer :
                 elem.coup_possible(detect_echec = True)
                 L += elem.coup
         return set(L)
