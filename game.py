@@ -3,6 +3,7 @@ from echiquier import Echiquier
 from point import Point
 from scene_droite import SceneDroite
 from accueil import Accueil
+from bot import Bot
 
 class Game:
     def __init__(self,screen):
@@ -11,6 +12,7 @@ class Game:
         self.piece_noir = []
         self.roi_blanc = None
         self.roi_noir = None
+        self.bot = Bot(self)
         self.echiquier = Echiquier(screen,self)
         self.screen = screen
         self.piece_selectione = None
@@ -44,13 +46,15 @@ class Game:
             self.couleur_joueur = 'noir'
             self.coup_blanc = self.calcul_coup_blanc()
             self.coup_noir = self.calcul_coup_noir(True)
-            print(self.coup_noir)
+            self.check_mate(self.coup_noir)
+            self.bot.calcule_coup_aleatoire()
+
 
         elif self.couleur_joueur == 'noir':
             self.couleur_joueur = 'blanc'
             self.coup_noir = self.calcul_coup_noir()
             self.coup_blanc = self.calcul_coup_blanc(True)
-            print(self.coup_noir)
+            self.check_mate(self.coup_blanc)
 
 
         else:
@@ -69,8 +73,6 @@ class Game:
             if self.echiquier.jeu[x][y].piece is None:
                 point = Point(x,y,self.screen,'noir')
             else:
-                print(self.echiquier.jeu[y][x].piece)
-                print(x,y)
                 point = Point(x, y, self.screen,'rouge')
 
             self.premouv.add(point)
@@ -87,11 +89,11 @@ class Game:
     def calcul_coup_blanc(self,roi_mouv=False,calcul=True):
         L = []
         for elem in self.piece_blanc:
-            if elem.piece != 'roi' :
+            if elem.piece != 'roi' and elem.peut_jouer:
                 elem.coup_possible(detect_echec = calcul)
                 L += elem.coup
 
-            elif elem.piece == 'roi' and roi_mouv :
+            elif elem.piece == 'roi' and roi_mouv and elem.peut_jouer:
                 elem.coup_possible(detect_echec = True)
         return set(L)
 
@@ -105,3 +107,14 @@ class Game:
                 elem.coup_possible(detect_echec = True)
                 L += elem.coup
         return set(L)
+
+    def check_mate(self,liste):
+        if len(liste) == 0 :
+            self.en_menu = True
+            del(self.echiquier)
+            del(self.all_piece)
+            self.all_piece = pygame.sprite.Group()
+            self.piece_noir.clear()
+            self.piece_blanc.clear()
+            self.echiquier = Echiquier(self.screen, self)
+            self.couleur_joueur = 'blanc'

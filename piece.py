@@ -448,7 +448,6 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
     piece.visible = False
     pieceima = PieceImaginaire()
     couleur = None
-    L_coup = {}
     if echiquier.jeu[x][y].piece is None :
         echiquier.jeu[x][y].piece = pieceima
     else:
@@ -467,7 +466,7 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
     else:
         echiquier.jeu[x][y].piece.color = couleur
         echiquier.jeu[x][y].piece.peut_jouer = True
-    del (pieceima)
+    del(pieceima)
     piece.visible = True
 
     if roi:

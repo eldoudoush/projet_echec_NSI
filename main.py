@@ -81,9 +81,10 @@ while running:
                 ga.echiquier.jeu[0][0].changer_pion(ga.echiquier.jeu[1][1].piece)
             elif event.key == pygame.K_q:
                 ga.echiquier.jeu[1][1].changer_pion(ga.echiquier.jeu[0][0].piece)
-            elif event.key == pygame.K_z:
-                ga.piece_selectione = None
-                print('pion deselectione')
+            elif event.key == pygame.K_ESCAPE:
+                running = False
+                pygame.quit()
+
 
             elif event.key == pygame.K_h:
                 if ga.couleur_joueur == 'noir':
