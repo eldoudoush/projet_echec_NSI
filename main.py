@@ -1,6 +1,5 @@
 from game import Game
 import pygame
-from accueil import Accueil
 import random
 
 pygame.init()
@@ -38,6 +37,7 @@ while running:
             if ga.en_menu:
                 if ga.ecran_accueil.play_button_rect.collidepoint(event.pos):
                     ga.en_menu = False
+                    ga.calcul_coup_blanc()
 
             if not ga.en_menu :
                 click_case = (

@@ -7,6 +7,10 @@ from accueil import Accueil
 class Game:
     def __init__(self,screen):
         self.all_piece = pygame.sprite.Group()
+        self.piece_blanc = []
+        self.piece_noir = []
+        self.roi_blanc = None
+        self.roi_noir = None
         self.echiquier = Echiquier(screen,self)
         self.screen = screen
         self.piece_selectione = None
@@ -16,6 +20,8 @@ class Game:
         self.scene_droite = SceneDroite(screen,self)
         self.ecran_accueil = Accueil(self.screen)
         self.rgb = (0,0,0)
+        self.coup_noir = {}
+        self.coup_blanc = {} 
 
     def update(self):
         if self.en_menu:
@@ -36,8 +42,17 @@ class Game:
     def changer_couleur(self):
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
+            self.coup_blanc = self.calcul_coup_blanc()
+            self.coup_noir = self.calcul_coup_noir(True)
+            print(self.coup_noir)
+
         elif self.couleur_joueur == 'noir':
             self.couleur_joueur = 'blanc'
+            self.coup_noir = self.calcul_coup_noir()
+            self.coup_blanc = self.calcul_coup_blanc(True)
+            print(self.coup_noir)
+
+
         else:
             print('quelque chose est arrivé')
 
@@ -48,8 +63,8 @@ class Game:
                 pygame.draw.rect(self.screen,jeu[j][i].color,jeu[j][i].rect)
 
     def afficher_deplacement_possible(self):
-        self.piece_selectione.coup_possible()
         for elem in self.piece_selectione.coup:
+            print(elem)
             x, y = elem
             if self.echiquier.jeu[x][y].piece is None:
                 point = Point(x,y,self.screen,'noir')
@@ -68,3 +83,25 @@ class Game:
         self.enlever_premouv()
         if not self.piece_selectione is None :
             self.afficher_deplacement_possible()
+
+    def calcul_coup_blanc(self,roi_mouv=False):
+        L = []
+        for elem in self.piece_blanc:
+            if elem.piece != 'roi' :
+                elem.coup_possible()
+                L += elem.coup
+
+            elif elem.piece == 'roi' and roi_mouv :
+                elem.coup_possible(detect_echec = True)
+        return set(L)
+
+    def calcul_coup_noir(self,roi_mouv=False):
+        L = []
+        for elem in self.piece_noir:
+            if elem.piece != 'roi' :
+                elem.coup_possible()
+                L += elem.coup
+            elif elem.piece == 'roi' and roi_mouv :
+                elem.coup_possible(detect_echec = True)
+                L += elem.coup
+        return set(L)
