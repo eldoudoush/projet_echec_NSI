@@ -11,6 +11,7 @@ class Pion(pygame.sprite.Sprite):
         self.taille_case = self.screen_height / 8
         self.color = color
         self.coup = []
+        self.val = 10
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
         else:
@@ -74,6 +75,7 @@ class Cheval(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.val = 30
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/cheval_blanc.png')
         else:
@@ -114,6 +116,7 @@ class Fou(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.val = 30
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/fou_blanc.png')
         else:
@@ -196,6 +199,7 @@ class Tour(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.val = 50
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/tour_blanc.png')
         else:
@@ -262,6 +266,7 @@ class Reine(pygame.sprite.Sprite):
         self.piece='dame'
         self.peut_jouer = True
         self.echiquier=echiquier
+        self.val = 90
         super().__init__()
         self.screen = screen
         self.screen_height = screen.get_height()
@@ -385,6 +390,7 @@ class Roi(pygame.sprite.Sprite):
         self.echiquier = echiquier
         self.piece = 'roi'
         self.peut_jouer = True
+        self.val = 900
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
@@ -399,6 +405,7 @@ class Roi(pygame.sprite.Sprite):
         self.coordone = (x,y)
         self.coup = []
         self.visible = True
+        self.echec = False
 
     def maj_position(self):
         self.rect.x = self.taille_case * self.coordone[0]
@@ -472,13 +479,9 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
     if roi:
 
         if coordonne in L_coup:
-            print(piece.piece)
-            print(L_coup)
             del(L_coup)
             return
     elif  co_roi in L_coup:
-        print(piece.piece)
-        print(L_coup)
         del(L_coup)
         return
     piece.coup.append(coordonne)

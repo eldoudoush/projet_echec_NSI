@@ -19,9 +19,7 @@ class Case:
 
     def changer_pion(self,piece):
          self.piece = piece
-         for elem in self.echiquier.all_case:
-             if piece.coordone == elem.coordone:
-                 elem.piece = None
+         self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
          piece.coordone = self.coordone
          piece.maj_position()
 
