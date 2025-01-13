@@ -12,7 +12,7 @@ class Case:
         self.rect = [self.taille_case*x,self.taille_case*y,self.taille_case,self.taille_case]
 
 
-        if sum(self.coordone)%2 == 1:
+        if sum(self.coordone)%2 == 0:
             self.color = (255,255,255)
         else:
             self.color = (93, 190, 37)

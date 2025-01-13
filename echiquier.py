@@ -54,22 +54,22 @@ class Echiquier:
             self.game.piece_blanc.append(fou2)
             self.jeu[i][0].piece = fou1
             self.jeu[i][7].piece = fou2
-        roi1 = Roi(3, 0, self.screen, 'noir',self)
-        roi2 = Roi(3, 7, self.screen, 'blanc',self)
+        roi1 = Roi(4, 0, self.screen, 'noir',self)
+        roi2 = Roi(4, 7, self.screen, 'blanc',self)
         self.game.all_piece.add(roi1)
         self.game.piece_noir.append(roi1)
         self.game.all_piece.add(roi2)
         self.game.piece_blanc.append(roi2)
         self.game.roi_noir = roi1
         self.game.roi_blanc = roi2
-        self.jeu[3][0].piece = roi1
-        self.jeu[3][7].piece = roi2
+        self.jeu[4][0].piece = roi1
+        self.jeu[4][7].piece = roi2
 
-        reine1 = Reine(4, 0, self.screen, 'noir',self)
-        reine2 = Reine(4, 7, self.screen, 'blanc',self)
+        reine1 = Reine(3, 0, self.screen, 'noir',self)
+        reine2 = Reine(3, 7, self.screen, 'blanc',self)
         self.game.all_piece.add(reine1)
         self.game.piece_noir.append(reine1)
         self.game.all_piece.add(reine2)
         self.game.piece_blanc.append(reine2)
-        self.jeu[4][0].piece = reine1
-        self.jeu[4][7].piece = reine2
+        self.jeu[3][0].piece = reine1
+        self.jeu[3][7].piece = reine2
