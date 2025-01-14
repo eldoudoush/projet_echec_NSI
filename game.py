@@ -67,8 +67,8 @@ class Game:
 
         if self.couleur_joueur == 'noir':
             print('bot jou')
-            #self.bot.calcule_coup_aleatoire()
-            self.bot.calcule_meilleur_coup(self.couleur_joueur)
+            self.bot.calcule_coup_aleatoire()
+            #print(self.bot.calcule_meilleur_coup(self.couleur_joueur,calcul=True))
 
     def update_echiquier(self):
         jeu = self.echiquier.jeu

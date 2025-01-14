@@ -32,6 +32,7 @@ class Bot():
         meilleur_coup = None
         meilleur_coup_piece = None
         meilleur_coup_score = 0
+        piece_mange = None
         if couleur == 'blanc':
             self.game.calcul_coup_noir()
             coup_blanc = self.game.calcul_coup_blanc(True)
@@ -63,7 +64,10 @@ class Bot():
         if calcul and self.game.echiquier.jeu[x][y].piece is None:
             meilleur_coup_piece_pos = meilleur_coup_piece.coordone
         elif calcul :
+            print('yahooooooooooooooooooooo')
+            meilleur_coup_piece_pos = meilleur_coup_piece.coordone
             piece_mange = self.game.echiquier.jeu[x][y].piece
+
         if self.game.echiquier.jeu[x][y].piece is None :
             self.game.echiquier.jeu[x][y].changer_pion(meilleur_coup_piece)
         else :
@@ -72,7 +76,7 @@ class Bot():
             meilleur_coup_piece.premier_coup = False
         self.game.changer_couleur()
 
-        if calcul and self.game.echiquier.jeu[x][y].piece is None:
+        if calcul and piece_mange is None:
             return [meilleur_coup,meilleur_coup_piece_pos]
         elif calcul :
             return [meilleur_coup, meilleur_coup_piece_pos,piece_mange]
