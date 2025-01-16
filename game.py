@@ -26,9 +26,10 @@ class Game:
         self.coup_blanc = {}
         self.afficher_mat = False
         self.taille_case = self.screen.get_height() / 8
+        self.timer_on = False
 
     def update(self):
-        if self.en_menu:
+        if self.en_menu :
             self.screen.fill(self.rgb)
             # pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
             self.screen.blit(self.ecran_accueil.texte_surface, self.ecran_accueil.texte_surface_rect)
@@ -67,8 +68,9 @@ class Game:
 
         if self.couleur_joueur == 'noir':
             print('bot jou')
-            self.bot.calcule_coup_aleatoire()
-            #print(self.bot.calcule_meilleur_coup(self.couleur_joueur,calcul=True))
+            #self.bot.calcule_coup_aleatoire()
+            self.bot.coup_joue_min_max( 3, 'noir')
+            #print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
 
     def update_echiquier(self):
         jeu = self.echiquier.jeu
@@ -150,6 +152,7 @@ class Game:
     def check_mate(self,liste):
         if len(liste) == 0 :
             self.afficher_mat = True
+            self.timer_on = False
 
     def afficher_echec_et_mat(self):
         if self.couleur_joueur == 'blanc':
@@ -174,3 +177,7 @@ class Game:
         self.echiquier = Echiquier(self.screen, self)
         self.couleur_joueur = 'blanc'
         self.afficher_mat = False
+
+    def sortdumenu(self):
+        self.en_menu = False
+        self.timer_on = True

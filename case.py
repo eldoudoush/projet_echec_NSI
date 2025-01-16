@@ -23,18 +23,20 @@ class Case:
          piece.coordone = self.coordone
          piece.maj_position()
 
-    def manger_pion(self, piece):
+    def manger_pion(self, piece ,pas_suprimer=False):
         if self.piece.color == 'blanc':
-            self.echiquier.game.scene_droite.piece_noir_manger.append(self.piece)
+            if not pas_suprimer:
+                self.echiquier.game.scene_droite.piece_noir_manger.append(self.piece)
             self.echiquier.game.piece_blanc.remove(self.piece)
         else:
-            self.echiquier.game.scene_droite.piece_blanc_manger.append(self.piece)
+            if not pas_suprimer:
+                self.echiquier.game.scene_droite.piece_blanc_manger.append(self.piece)
             self.echiquier.game.piece_noir.remove(self.piece)
-        self.echiquier.game.all_piece.remove(self.piece)
+        if not pas_suprimer :
+            self.echiquier.game.all_piece.remove(self.piece)
         self.piece = piece
-        for elem in self.echiquier.all_case:
-            if piece.coordone == elem.coordone:
-                elem.piece = None
+        self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
+
         """self.echiquier.game.scene_droite.append(piece.coordone)
         self.echiquier.game.scene_droite.append(piece.piece)
         self.echiquier.game.scene_droite.append()"""

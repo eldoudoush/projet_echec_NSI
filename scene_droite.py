@@ -22,11 +22,13 @@ class SceneDroite:
         self.piece_noir_manger = []
         self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.width//14)
 
-    def temp_blanc_reduction(self):
-        self.timer_blanc -= 1
+    def temp_timer_reduction(self):
+        if self.game.timer_on :
+            if self.game.couleur_joueur == 'noir':
+                self.timer_noir -=1
+            else :
+                self.timer_blanc -= 1
 
-    def temp_noir_reduction(self):
-        self.timer_noir -= 1
 
     def maj_temps_minute(self):
         self.timer_blanc_minute = str(self.timer_blanc//60)+':'+('0' if self.timer_blanc%60<10 else '') + str(self.timer_blanc%60)

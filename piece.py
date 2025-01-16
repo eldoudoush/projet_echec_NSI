@@ -41,7 +41,7 @@ class Pion(pygame.sprite.Sprite):
                     else :
                         ajoute_coup_pas_echec(self, (x,y - i), self.echiquier, roi=False,calcul=detect_echec)
             else:
-                if self.echiquier.jeu[x][y -1].piece is None:
+                if out_of_board((x,y - 1)) and self.echiquier.jeu[x][y -1].piece is None:
                     ajoute_coup_pas_echec(self, (x, y-1), self.echiquier, roi=False,calcul=detect_echec)
             if x < 7 and not self.echiquier.jeu[x+1][y -1].piece is None and self.echiquier.jeu[x+1][y -1].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (x+1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
@@ -56,7 +56,7 @@ class Pion(pygame.sprite.Sprite):
                     else :
                         ajoute_coup_pas_echec(self, (x,y + i), self.echiquier, roi=False,calcul=detect_echec)
             else:
-                if self.echiquier.jeu[x][y +1].piece is None:
+                if out_of_board((x,y + 1)) and self.echiquier.jeu[x][y +1].piece is None:
                     ajoute_coup_pas_echec(self, (x, y+1), self.echiquier, roi=False,calcul=detect_echec)
             if x < 7 and not self.echiquier.jeu[x+1][y +1].piece is None and self.echiquier.jeu[x+1][y +1].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (x+1, y +1), self.echiquier, roi=False,calcul=detect_echec)

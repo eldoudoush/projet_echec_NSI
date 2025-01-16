@@ -24,11 +24,9 @@ while running:
             pygame.quit()
 
         elif event.type == passesecone: #ce declanche chaque second
-            if not ga.en_menu :
-                if ga.couleur_joueur == 'noir':
-                    ga.scene_droite.temp_noir_reduction()
-                elif ga.couleur_joueur == 'blanc':
-                    ga.scene_droite.temp_blanc_reduction()
+
+            ga.scene_droite.temp_timer_reduction()
+
 
         elif event.type == changecouleur: # ce declanche chaque quar second
             ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
@@ -36,7 +34,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
             if ga.en_menu:
                 if ga.ecran_accueil.play_button_rect.collidepoint(event.pos):
-                    ga.en_menu = False
+                    ga.sortdumenu()
                     ga.calcul_coup_blanc()
 
             if not ga.en_menu :
