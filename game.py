@@ -27,13 +27,14 @@ class Game:
         self.afficher_mat = False
         self.taille_case = self.screen.get_height() / 8
         self.timer_on = False
+        self.select_bot = None
 
     def update(self):
         if self.en_menu :
             self.screen.fill(self.rgb)
             # pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
             self.screen.blit(self.ecran_accueil.texte_surface, self.ecran_accueil.texte_surface_rect)
-            self.screen.blit(self.ecran_accueil.play_button, self.ecran_accueil.play_button_rect)
+            self.ecran_accueil.update()
         else:
             self.screen.fill((0, 0, 0))
             self.update_echiquier()
@@ -50,14 +51,14 @@ class Game:
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
             self.coup_blanc = self.calcul_coup_blanc()
-            self.coup_noir = self.calcul_coup_noir(True)
+            self.coup_noir = self.calcul_coup_noir(roi_mouv=True)
             self.check_mate(self.coup_noir)
 
 
         elif self.couleur_joueur == 'noir':
             self.couleur_joueur = 'blanc'
             self.coup_noir = self.calcul_coup_noir()
-            self.coup_blanc = self.calcul_coup_blanc(True)
+            self.coup_blanc = self.calcul_coup_blanc(roi_mouv=True)
             self.check_mate(self.coup_blanc)
 
         else:
@@ -67,10 +68,15 @@ class Game:
         self.enlever_echec()
 
         if self.couleur_joueur == 'noir':
-            print('bot jou')
-            #self.bot.calcule_coup_aleatoire()
-            self.bot.coup_joue_min_max( 3, 'noir')
-            #print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
+            if self.select_bot is None:
+                return
+            elif self.select_bot == 1 :
+                self.bot.calcule_coup_aleatoire()
+            elif self.select_bot == 2:
+                print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
+            elif self.select_bot == 3 :
+                self.bot.coup_joue_min_max( 3, self.couleur_joueur)
+
 
     def update_echiquier(self):
         jeu = self.echiquier.jeu
@@ -109,6 +115,8 @@ class Game:
 
             elif elem.piece == 'roi' and roi_mouv and elem.peut_jouer:
                 elem.coup_possible(detect_echec = True)
+                l += elem.coup
+
         return set(l)
 
     def calcul_coup_noir(self,roi_mouv=False,calcul=True):
@@ -178,6 +186,9 @@ class Game:
         self.couleur_joueur = 'blanc'
         self.afficher_mat = False
 
-    def sortdumenu(self):
+    def choix_mode_jeu(self,var):
+        self.select_bot = var
+        print('je suis une var : ',var)
         self.en_menu = False
         self.timer_on = True
+        self.calcul_coup_blanc()

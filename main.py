@@ -33,9 +33,14 @@ while running:
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
             if ga.en_menu:
-                if ga.ecran_accueil.play_button_rect.collidepoint(event.pos):
-                    ga.sortdumenu()
-                    ga.calcul_coup_blanc()
+                if ga.ecran_accueil.play_button0_rect.collidepoint(event.pos):
+                    ga.choix_mode_jeu(None)
+                elif ga.ecran_accueil.play_button1_rect.collidepoint(event.pos):
+                    ga.choix_mode_jeu(1)
+                elif ga.ecran_accueil.play_button2_rect.collidepoint(event.pos):
+                    ga.choix_mode_jeu(2)
+                elif ga.ecran_accueil.play_button3_rect.collidepoint(event.pos):
+                    ga.choix_mode_jeu(3)
 
             if not ga.en_menu :
                 click_case = (

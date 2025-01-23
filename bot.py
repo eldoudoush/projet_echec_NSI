@@ -89,7 +89,7 @@ class Bot():
         jouer_coup_exact(self,coup_precedent)
         meilleurcoup = self.calcule_meilleur_coup(couleur_actuelle,calcul=True,compte_pos_neg=pos_neg)
         dejouer_coup(self,coup_precedent)
-        print('bot calcule fors :',d,' la liste a traite ',meilleurcoup)
+        #print('bot calcule fors :',d,' la liste a traite ',meilleurcoup)
 
         for i in range(len(meilleurcoup[0])-2) :
             if coup_precedent is None :
@@ -130,7 +130,7 @@ def jouer_coup(bot,liste):
         randnb = randint(0, len(liste[i]) - 1)
         coup_jouer = liste[i][randnb]
         print("c'est le coup jouer ",coup_jouer)
-        x, y = coup_jouer
+        x, y = coup_jouer[0]
         if len(coup_jouer) == 3:
             bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1])
         else:
@@ -143,6 +143,8 @@ def jouer_coup_random(bot,liste):
         randnb = 0
     else:
         randnb = randint(0, len(liste) - 1)
+    if randnb > len(liste)-1 :
+        return
     coup = liste[randnb]
     x,y = coup[0]
     if len(coup) == 3:

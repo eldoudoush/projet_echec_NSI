@@ -420,19 +420,19 @@ class Roi(pygame.sprite.Sprite):
             a, b = elem
             if self.color == 'blanc':
                 if out_of_board(elem) and self.echiquier.jeu[a][b].piece is None :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True ,calcul=detect_echec )
 
                 elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][
                     b].piece.color != self.color :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True,calcul=detect_echec )
 
             else:
                 if out_of_board(elem) and self.echiquier.jeu[a][b].piece is None :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True ,calcul=detect_echec)
 
                 elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][
                     b].piece.color != self.color :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True,calcul=detect_echec )
 
 
 
