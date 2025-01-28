@@ -1,5 +1,5 @@
 import pygame
-
+import string
 
 class SceneDroite:
 
@@ -17,10 +17,11 @@ class SceneDroite:
         self.timer_noir_minute = ''
         self.timer_blanc_minute = ''
         self.coup_joue_blanc = []
-        self.piece_blanc_manger = []
+        self.piece_blanc_manger = AffichagePionManger(self.screen,'blanc')
         self.coup_joue_noir = []
-        self.piece_noir_manger = []
+        self.piece_noir_manger = AffichagePionManger(self.screen,'noir')
         self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.width//14)
+        self.all_texte = []
 
     def temp_timer_reduction(self):
         if self.game.timer_on :
@@ -40,17 +41,126 @@ class SceneDroite:
         text_noir = self.timer_noir_minute
         self.screen.blit(self.font.render(text_blanc, True, (255,255,255)), self.pos_blanc)
         self.screen.blit(self.font.render(text_noir, True, (255, 255, 255)), self.pos_noir)
-        self.afficher_piece_capturer()
+        self.piece_noir_manger.update()
+        self.piece_blanc_manger.update()
+        self.afficher_coup_texte()
 
     def afficher_piece_capturer(self):
-        L_piece = self.piece_blanc_manger
+        L_piece = self.piece_noir_manger
         for i in range(len(L_piece)):
-            L_piece[i].rect.x ,L_piece[i].rect.y= self.origine[0]+(i)*L_piece[i].rect[2],500
-
+            L_piece[i].rect.x ,L_piece[i].rect.y= self.origine[0]+ i*L_piece[i].rect[2],500
 
         for elem in L_piece:
             self.screen.blit(elem.image, elem.rect)
 
+    def reset_scene_droite(self):
+        self.timer_noir = 30 * 60
+        self.timer_blanc = 30 * 60
+        self.coup_joue_blanc.clear()
+        self.piece_blanc_manger.clear()
+        self.coup_joue_noir.clear()
+        self.piece_noir_manger.clear()
+        self.all_texte.clear()
+
+    def cree_texte(self,couleur):
+        if couleur == 'blanc' :
+            coup = self.coup_joue_blanc[-1]
+        else :
+            coup = self.coup_joue_noir[-1]
+
+        texte = Texte(self.screen,coup,couleur)
+        for elem in self.all_texte :
+            if elem.couleur == couleur:
+                elem.changer_position()
+        self.all_texte.append(texte)
+
+    def afficher_coup_texte(self):
+        for elem in self.all_texte:
+            if elem.pos_actuel < 12 :
+                self.screen.blit(elem.texte_affichable[0],elem.texte_affichable[1])
+
+
+class Texte:
+    def __init__(self,screen,coup_jouer_ecrit,couleur):
+        self.screen = screen
+        self.screen_height = screen.get_height()
+        self.origine = (self.screen_height, 0)
+        self.width = self.screen.get_width() - self.screen_height
+        self.pos_actuel = 0
+        self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.width//25)
+        self.y = (self.pos_actuel+5) * self.screen_height / 25
+        self.couleur = couleur
+        if couleur == 'blanc' :
+            self.x = self.screen_height + self.width/8
+        else:
+            self.x = self.screen_height + 5 * self.width / 8
+        self.texte = self.creer_texte(coup_jouer_ecrit)
+        self.texte_affichable = (self.font.render(self.texte, True, (255, 255, 255)), (self.x ,self.y))
+
+    def creer_texte(self,coup):
+        alphabet = string.ascii_lowercase
+        texte = ''
+        dic_Piece_anglais = {'p' : '','d' : 'Q','t' : 'R','r' : 'K','f' : 'B','c': 'C'}
+        case = alphabet[coup[1][0]] + str(coup[1][1])
+        texte += dic_Piece_anglais[coup[0]] + case
+        if len(coup) == 3:
+            texte += 'x' + dic_Piece_anglais[coup[2]]
+        return texte
+
+    def changer_position(self):
+        self.pos_actuel += 1
+        self.y = (self.pos_actuel+5) * self.screen_height / 25
+        self.texte_affichable = (self.font.render(self.texte, True, (255, 255, 255)), (self.x ,self.y) )
+
+
+
+class AffichagePionManger:
+    def __init__(self,screen,couleur):
+        self.couleur = couleur
+        self.screen = screen
+        self.screen_height = screen.get_height()
+        self.origine = (self.screen_height, 0)
+        self.width = self.screen.get_width() - self.screen_height
+
+        self.liste_piece_manger =[]
+        self.dic_piece = {'pion':0,'cheval':0,'dame':0,'roi':0,'fou':0,'tour':0}
+        self.dic_emplacement_piece = {'pion':self.pos(0,0),'cheval':self.pos(1,0),'dame':self.pos(2,0),'roi':self.pos(2,1),'fou':self.pos(0,1),'tour':self.pos(1,1)}
+        self.dic_texte_piece = {'pion':None,'cheval':None,'dame':None,'roi':None,'fou':None,'tour':None}
+        self.font_size =  self.width // 30
+        self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF',self.font_size)
+
+    def creer_texte(self,piece):
+        self.liste_piece_manger.append(piece)
+        piece_nom = piece.piece
+        self.dic_piece[piece_nom] += 1
+        self.dic_texte_piece[piece_nom] = (self.font.render( str(self.dic_piece[piece_nom])+'x', True, (255, 255, 255)), (self.dic_emplacement_piece[piece_nom]))
+
+    def update(self):
+        for elem in self.dic_texte_piece.values():
+            if not elem is None :
+                x,y = elem
+                self.screen.blit(x,y)
+
+    def pos(self,x,y):
+        if self.couleur == 'blanc':
+            x_return = self.screen_height + ((x / 8) * self.width)
+            y_return = (y+6) * self.screen_height / 8
+        else:
+            x_return = self.screen_height + (((x+5) / 8) * self.width)
+            y_return =  (y+6) * self.screen_height / 8
+        return (x_return,y_return)
+
+    def creer_image_piece(self):
+        dic = {'pion':None,'cheval':None,'dame':None,'roi':None,'fou':None,'tour':None}
+        for piece,val in dic.items():
+            return
+
+    def clear(self):
+        self.liste_piece_manger = []
+        self.dic_piece = {'pion': 0, 'cheval': 0, 'dame': 0, 'roi': 0, 'fou': 0, 'tour': 0}
+        self.dic_emplacement_piece = {'pion': self.pos(0, 0), 'cheval': self.pos(1, 0), 'dame': self.pos(2, 0),
+                                      'roi': self.pos(0, 1), 'fou': self.pos(1, 1), 'tour': self.pos(2, 1)}
+        self.dic_texte_piece = {'pion': None, 'cheval': None, 'dame': None, 'roi': None, 'fou': None, 'tour': None}
 """import pygame
 pygame.init()
 screen = pygame.display.set_mode((128, 128))

@@ -43,9 +43,9 @@ class Pion(pygame.sprite.Sprite):
             else:
                 if out_of_board((x,y - 1)) and self.echiquier.jeu[x][y -1].piece is None:
                     ajoute_coup_pas_echec(self, (x, y-1), self.echiquier, roi=False,calcul=detect_echec)
-            if x < 7 and not self.echiquier.jeu[x+1][y -1].piece is None and self.echiquier.jeu[x+1][y -1].piece.color != self.color :
+            if out_of_board((x+1,y -1)) and not self.echiquier.jeu[x+1][y -1].piece is None and self.echiquier.jeu[x+1][y -1].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (x+1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
-            if x > 0 and not self.echiquier.jeu[x-1][y -1].piece is None and self.echiquier.jeu[x-1][y -1].piece.color != self.color:
+            if out_of_board((x-1,y -1)) and not self.echiquier.jeu[x-1][y -1].piece is None and self.echiquier.jeu[x-1][y -1].piece.color != self.color:
                 ajoute_coup_pas_echec(self, (x-1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
 
         else :
@@ -58,9 +58,9 @@ class Pion(pygame.sprite.Sprite):
             else:
                 if out_of_board((x,y + 1)) and self.echiquier.jeu[x][y +1].piece is None:
                     ajoute_coup_pas_echec(self, (x, y+1), self.echiquier, roi=False,calcul=detect_echec)
-            if x < 7 and not self.echiquier.jeu[x+1][y +1].piece is None and self.echiquier.jeu[x+1][y +1].piece.color != self.color :
+            if out_of_board((x+1,y +1)) and not self.echiquier.jeu[x+1][y +1].piece is None and self.echiquier.jeu[x+1][y +1].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (x+1, y +1), self.echiquier, roi=False,calcul=detect_echec)
-            if x > 0 and not self.echiquier.jeu[x-1][y +1].piece is None and self.echiquier.jeu[x-1][y +1].piece.color != self.color:
+            if out_of_board((x-1,y +1)) and not self.echiquier.jeu[x-1][y +1].piece is None and self.echiquier.jeu[x-1][y +1].piece.color != self.color:
                 ajoute_coup_pas_echec(self, (x-1, y +1), self.echiquier, roi=False,calcul=detect_echec)
 
 
@@ -464,10 +464,10 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
 
     if piece.color == 'blanc':
         co_roi = echiquier.game.roi_blanc.coordone
-        L_coup = echiquier.game.calcul_coup_noir(calcul=False)
+        L_coup = echiquier.game.calcul_coup_noir(roi_mouv=True,calcul=False)
     else:
         co_roi = echiquier.game.roi_noir.coordone
-        L_coup = echiquier.game.calcul_coup_blanc(calcul=False)
+        L_coup = echiquier.game.calcul_coup_blanc(roi_mouv=True,calcul=False)
     if echiquier.jeu[x][y].piece.piece == 'ima' :
         echiquier.jeu[x][y].piece = None
     else:
@@ -477,13 +477,11 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
     piece.visible = True
 
     if roi:
-
         if coordonne in L_coup:
-            del(L_coup)
             return
     elif  co_roi in L_coup:
-        del(L_coup)
         return
+
     piece.coup.append(coordonne)
 
 

@@ -2,6 +2,7 @@ from game import Game
 import pygame
 import random
 
+
 pygame.init()
 # pygame.time.get_ticks pour avoir le nombre de tick ecoulé depuis lancement de la fenetre
 screen = pygame.display.set_mode((1000,600))
@@ -14,7 +15,6 @@ pygame.time.set_timer(passesecone, 1000)
 changecouleur = pygame.USEREVENT + 2
 pygame.time.set_timer(changecouleur, 250)
 ga = Game(screen)
-
 
 while running:
     #event pygame
@@ -43,6 +43,9 @@ while running:
                     ga.choix_mode_jeu(3)
 
             if not ga.en_menu :
+
+                if ga.afficher_mat and ga.bouton_restart_rect.collidepoint(event.pos):
+                    ga.reset()
                 click_case = (
                 int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
                 if ga.piece_selectione is None:
@@ -63,8 +66,6 @@ while running:
                                 else:
                                     elem.manger_pion(ga.piece_selectione)
                                     ga.changer_couleur()
-                                    if ga.piece_selectione.piece == 'pion' :
-                                        ga.piece_selectione.premier_coup = False
                                     ga.changer_piece_selectionner(None)
                     else :
                         piece_selec = ga.piece_selectione
@@ -82,11 +83,11 @@ while running:
 
             elif event.key == pygame.K_e:
                 screen = pygame.display.set_mode((500,400))
-                ga = Game(screen)
+                ga =  Game(pygame.display.set_mode((500,400)))
             #elif event.key == pygame.K_d:
                 #ga.echiquier.jeu[0][0].changer_pion(ga.echiquier.jeu[1][1].piece)
-            #elif event.key == pygame.K_q:
-                #ga.echiquier.jeu[1][1].changer_pion(ga.echiquier.jeu[0][0].piece)
+            elif event.key == pygame.K_q:
+                ga.afficher_mat = True
             elif event.key == pygame.K_ESCAPE:
                 running = False
                 pygame.quit()

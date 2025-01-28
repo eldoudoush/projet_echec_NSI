@@ -28,12 +28,13 @@ class Game:
         self.taille_case = self.screen.get_height() / 8
         self.timer_on = False
         self.select_bot = None
+        self.bouton_restart = None
+        self.bouton_restart_rect = None
 
     def update(self):
         if self.en_menu :
             self.screen.fill(self.rgb)
             # pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
-            self.screen.blit(self.ecran_accueil.texte_surface, self.ecran_accueil.texte_surface_rect)
             self.ecran_accueil.update()
         else:
             self.screen.fill((0, 0, 0))
@@ -51,18 +52,18 @@ class Game:
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
             self.coup_blanc = self.calcul_coup_blanc()
-            self.coup_noir = self.calcul_coup_noir(roi_mouv=True)
+            self.coup_noir = self.calcul_coup_noir()
             self.check_mate(self.coup_noir)
 
 
         elif self.couleur_joueur == 'noir':
             self.couleur_joueur = 'blanc'
             self.coup_noir = self.calcul_coup_noir()
-            self.coup_blanc = self.calcul_coup_blanc(roi_mouv=True)
+            self.coup_blanc = self.calcul_coup_blanc()
             self.check_mate(self.coup_blanc)
 
         else:
-            print('probleme !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+            print('probleme couleur !!!!!!!!!!!!!!!!!!!!!!!!!!!!!')
 
         self.afficher_echec()
         self.enlever_echec()
@@ -75,7 +76,8 @@ class Game:
             elif self.select_bot == 2:
                 print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
             elif self.select_bot == 3 :
-                self.bot.coup_joue_min_max( 3, self.couleur_joueur)
+                #self.bot.coup_joue_min_max( 3, self.couleur_joueur)
+                print(self.bot.jouer_min_max(2,True,self.couleur_joueur,(0,"mouv"),None))
 
 
     def update_echiquier(self):
@@ -106,7 +108,7 @@ class Game:
         if not self.piece_selectione is None :
             self.afficher_deplacement_possible()
 
-    def calcul_coup_blanc(self,roi_mouv=False,calcul=True):
+    def calcul_coup_blanc(self,roi_mouv=True,calcul=True):
         l = []
         for elem in self.piece_blanc:
             if elem.piece != 'roi' and elem.peut_jouer:
@@ -114,19 +116,19 @@ class Game:
                 l += elem.coup
 
             elif elem.piece == 'roi' and roi_mouv and elem.peut_jouer:
-                elem.coup_possible(detect_echec = True)
+                elem.coup_possible(detect_echec = calcul)
                 l += elem.coup
 
         return set(l)
 
-    def calcul_coup_noir(self,roi_mouv=False,calcul=True):
+    def calcul_coup_noir(self,roi_mouv=True,calcul=True):
         l = []
         for elem in self.piece_noir:
             if elem.piece != 'roi' and elem.peut_jouer :
                 elem.coup_possible(detect_echec = calcul)
                 l += elem.coup
             elif elem.piece == 'roi' and roi_mouv and elem.peut_jouer :
-                elem.coup_possible(detect_echec = True)
+                elem.coup_possible(detect_echec = calcul)
                 l += elem.coup
         return set(l)
 
@@ -172,7 +174,27 @@ class Game:
         texte_surface_rect = texte_surface.get_rect()
         texte_surface_rect.x = self.screen.get_width() / 5
         texte_surface_rect.y = self.screen.get_height() / 3
-        self.screen.blit(texte_surface,texte_surface_rect)
+
+
+        play_button0 = pygame.image.load('pieces_echecs/bouton_vierge.png')
+        play_button0 = pygame.transform.scale(play_button0, (self.screen.get_width() / 3, self.screen.get_height() / 6))
+        play_button0_rect = play_button0.get_rect()
+        play_button0_rect[0] = self.screen.get_width() / 4
+        play_button0_rect[1] = 3 * self.screen.get_height() / 5
+
+
+        font1 = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen.get_width() // 40)
+
+        texte1_surface = font1.render("retour au menu", True, (0, 0, 0))
+        texte1_surface_rect = texte1_surface.get_rect()
+        texte1_surface_rect.x = 1.15 * self.screen.get_width() / 4
+        texte1_surface_rect.y = 2 * self.screen.get_height() / 3
+
+        self.bouton_restart_rect = play_button0_rect
+        self.bouton_restart = play_button0
+        self.screen.blit(texte_surface, texte_surface_rect)
+        self.screen.blit(play_button0, play_button0_rect)
+        self.screen.blit(texte1_surface, texte1_surface_rect)
 
 
     def reset(self):
@@ -182,9 +204,23 @@ class Game:
         self.all_piece = pygame.sprite.Group()
         self.piece_noir.clear()
         self.piece_blanc.clear()
+        self.roi_blanc = None
+        self.roi_noir = None
         self.echiquier = Echiquier(self.screen, self)
         self.couleur_joueur = 'blanc'
         self.afficher_mat = False
+        self.piece_selectione = None
+        self.couleur_joueur = 'blanc'
+        self.en_menu = True
+        self.premouv = pygame.sprite.Group()
+        self.coup_noir.clear()
+        self.coup_blanc.clear()
+        self.afficher_mat = False
+        self.timer_on = False
+        self.select_bot = None
+
+        self.scene_droite.reset_scene_droite()
+
 
     def choix_mode_jeu(self,var):
         self.select_bot = var
