@@ -18,6 +18,11 @@ class Case:
             self.color = (93, 190, 37)
 
     def changer_pion(self,piece,pas_suprimer=False):
+        """
+        :param piece: piece
+        :param pas_suprimer: bool
+        :return:
+        """
         self.piece = piece
         self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
         piece.coordone = self.coordone

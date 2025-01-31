@@ -29,7 +29,8 @@ while running:
 
 
         elif event.type == changecouleur: # ce declanche chaque quar second
-            ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+            # ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
+            ga.rgb = (100,150,36)
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
             if ga.en_menu:

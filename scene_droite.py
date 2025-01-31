@@ -143,7 +143,7 @@ class AffichagePionManger:
 
     def pos(self,x,y):
         if self.couleur == 'blanc':
-            x_return = self.screen_height + ((x / 8) * self.width)
+            x_return = self.screen_height + ((x / 8) * self.width) + 1 * self.width / 40
             y_return = (y+6) * self.screen_height / 8
         else:
             x_return = self.screen_height + (((x+5) / 8) * self.width)
@@ -157,10 +157,11 @@ class AffichagePionManger:
 
     def clear(self):
         self.liste_piece_manger = []
-        self.dic_piece = {'pion': 0, 'cheval': 0, 'dame': 0, 'roi': 0, 'fou': 0, 'tour': 0}
-        self.dic_emplacement_piece = {'pion': self.pos(0, 0), 'cheval': self.pos(1, 0), 'dame': self.pos(2, 0),
-                                      'roi': self.pos(0, 1), 'fou': self.pos(1, 1), 'tour': self.pos(2, 1)}
-        self.dic_texte_piece = {'pion': None, 'cheval': None, 'dame': None, 'roi': None, 'fou': None, 'tour': None}
+        # self.dic_piece = {'pion': 0, 'cheval': 0, 'dame': 0, 'roi': 0, 'fou': 0, 'tour': 0}
+        # self.dic_emplacement_piece = {'pion': self.pos(0, 0), 'cheval': self.pos(1, 0), 'dame': self.pos(2, 0),
+        #                               'roi': self.pos(0, 1), 'fou': self.pos(1, 1), 'tour': self.pos(2, 1)}
+        # self.dic_texte_piece = {'pion': None, 'cheval': None, 'dame': None, 'roi': None, 'fou': None, 'tour': None}
+        self.__init__(self.screen ,self.couleur)
 """import pygame
 pygame.init()
 screen = pygame.display.set_mode((128, 128))
