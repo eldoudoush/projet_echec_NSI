@@ -1,4 +1,5 @@
 import pygame
+from fonction_utile import import_image_resize
 
 class Pion(pygame.sprite.Sprite):
 
@@ -12,14 +13,20 @@ class Pion(pygame.sprite.Sprite):
         self.color = color
         self.coup = []
         self.val = 10
+        # if color == 'blanc':
+        #     self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
+        # else:
+        #     self.image = pygame.image.load('pieces_echecs/pion_noir.png')
+        # self.image = pygame.transform.scale(self.image, (self.taille_case, self.taille_case))
+        # self.rect = self.image.get_rect()
+        # self.rect.x = self.taille_case*x
+        # self.rect.y = self.taille_case*y
         if color == 'blanc':
-            self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
+            image = 'pieces_echecs/pion_blanc.png'
         else:
-            self.image = pygame.image.load('pieces_echecs/pion_noir.png')
-        self.image = pygame.transform.scale(self.image, (self.taille_case, self.taille_case))
-        self.rect = self.image.get_rect()
-        self.rect.x = self.taille_case*x
-        self.rect.y = self.taille_case*y
+            image = 'pieces_echecs/pion_noir.png'
+        self.image,self.rect = import_image_resize(image,self.taille_case, self.taille_case,self.taille_case*x,self.taille_case*y)
+
         self.coordone = (x,y)
         self.premier_coup = True
         self.echiquier = echiquier

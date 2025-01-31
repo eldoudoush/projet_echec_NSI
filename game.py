@@ -31,6 +31,7 @@ class Game:
         self.bouton_restart = None
         self.bouton_restart_rect = None
 
+
     def update(self):
         if self.en_menu :
             self.screen.fill(self.rgb)

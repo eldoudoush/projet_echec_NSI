@@ -1,4 +1,5 @@
 import pygame
+from fonction_utile import import_image_resize
 
 pygame.font.init()
 print(pygame.font.get_fonts())
@@ -11,18 +12,11 @@ class Accueil:
          self.all_bouton = []
          self.all_texte = []
 
-         self.play_button0 = pygame.image.load('pieces_echecs/bouton_vierge.png')
-         self.play_button0 = pygame.transform.scale(self.play_button0, (self.screen_width/4,screen.get_height()/7))
-         self.play_button0_rect = self.play_button0.get_rect()
-         self.play_button0_rect[0] = screen.get_width()/8
-         self.play_button0_rect[1] = screen.get_height()/3
-         self.all_bouton.append((self.play_button0,self.play_button0_rect))
 
-         self.play_button1 = pygame.image.load('pieces_echecs/bouton_vierge.png')
-         self.play_button1 = pygame.transform.scale(self.play_button1, (self.screen_width / 4, screen.get_height() / 7))
-         self.play_button1_rect = self.play_button1.get_rect()
-         self.play_button1_rect[0] = screen.get_width() / 8
-         self.play_button1_rect[1] = screen.get_height() / 3 + self.play_button1_rect[3]
+         self.play_button0, self.play_button0_rect = import_image_resize('pieces_echecs/bouton_vierge.png',self.screen_width/4,screen.get_height()/7,screen.get_width()/8,screen.get_height()/3)
+         self.all_bouton.append((self.play_button0, self.play_button0_rect))
+
+         self.play_button1, self.play_button1_rect = import_image_resize('pieces_echecs/bouton_vierge.png',self.screen_width/4,screen.get_height()/7,screen.get_width()/8,screen.get_height() / 3 + self.play_button0_rect[3])
          self.all_bouton.append((self.play_button1,self.play_button1_rect))
 
          self.play_button2 = pygame.image.load('pieces_echecs/bouton_vierge.png')
