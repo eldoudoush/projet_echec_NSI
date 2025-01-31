@@ -74,6 +74,9 @@ class Accueil:
 
 
      def update(self):
+         """
+         :return: affiche tout les boutton de l'acceuil
+         """
          for elem in self.all_bouton:
              elem_img, elem_rect = elem
              self.screen.blit(elem_img,elem_rect)

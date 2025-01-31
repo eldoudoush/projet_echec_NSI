@@ -26,10 +26,18 @@ class Pion(pygame.sprite.Sprite):
         self.visible = True
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec=False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -89,10 +97,18 @@ class Cheval(pygame.sprite.Sprite):
         self.visible = True
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+                """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -130,10 +146,18 @@ class Fou(pygame.sprite.Sprite):
         self.visible = True
 
     def maj_position(self):
+        """
+                met a jour la position de la piece en fonction de la case où elle est
+                """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+                """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -213,10 +237,18 @@ class Tour(pygame.sprite.Sprite):
         self.visible = True
 
     def maj_position(self):
+        """
+                met a jour la position de la piece en fonction de la case où elle est
+                """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+                """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -285,10 +317,18 @@ class Reine(pygame.sprite.Sprite):
         self.visible = True
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -408,10 +448,18 @@ class Roi(pygame.sprite.Sprite):
         self.echec = False
 
     def maj_position(self):
+        """
+                met a jour la position de la piece en fonction de la case où elle est
+                """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+                """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -437,6 +485,10 @@ class Roi(pygame.sprite.Sprite):
 
 
 def out_of_board(a):
+    """
+    :param a: tuple modelisant un coordone
+    :return: True si a est dans l'echiquier False sinon
+    """
     x,y = a
     return 0 <= x <= 7 and 0 <= y <= 7
 
@@ -447,6 +499,15 @@ class PieceImaginaire:
         self.visible = True
 
 def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
+    """
+    :param piece: piece de l'echiquier
+    :param coordonne: tuple( coordonner ou il veut se rendre)
+    :param echiquier: l'echiquier
+    :param roi: bool
+    :param calcul: bool
+    rajoute le coup a piece.coup si calcul = False sinon regarde si le coup met en echec le roi de la piece
+    si oui ne l'ajoute pas sinon l'ajoute
+    """
     if not calcul :
         piece.coup.append(coordonne)
         return

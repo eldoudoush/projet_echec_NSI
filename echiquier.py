@@ -17,6 +17,9 @@ class Echiquier:
         self.création_piece()
 
     def création_piece(self):
+        """
+        place toute les piece dans le case de depart
+        """
 
         for i in range(8):
             pion1 =Pion(i,1,self.screen,'noir',self)

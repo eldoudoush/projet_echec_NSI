@@ -52,7 +52,7 @@ class Game:
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
             self.coup_blanc = self.calcul_coup_blanc()
-            self.coup_noir = self.calcul_coup_noir()
+            self.coup_noir = self.calcul_coup_noir(True)
             self.check_mate(self.coup_noir)
 
 
@@ -81,12 +81,18 @@ class Game:
 
 
     def update_echiquier(self):
+        """
+        :return: affiche toute les cases de l'echiquier
+        """
         jeu = self.echiquier.jeu
         for i in range(8):
             for j in range(8):
                 pygame.draw.rect(self.screen,jeu[j][i].color,jeu[j][i].rect)
 
     def afficher_deplacement_possible(self):
+        '''
+        :return: affiche tout les delacement possible d'une piece calculer au préalable
+        '''
         for elem in self.piece_selectione.coup:
             print(elem)
             x, y = elem
@@ -100,15 +106,29 @@ class Game:
         self.premouv.add(point)
 
     def enlever_premouv(self):
+        """
+        :return: enlève tout les affichage charcher
+        """
         self.premouv.empty()
 
     def changer_piece_selectionner(self,piece):
+        """
+        :param piece: piece de l'echiquier ou None
+        :return: met la piece en piece selectionner et affiche les coup de celle-ci
+        """
         self.piece_selectione = piece
         self.enlever_premouv()
         if not self.piece_selectione is None :
             self.afficher_deplacement_possible()
 
     def calcul_coup_blanc(self,roi_mouv=True,calcul=True):
+        """
+        :param roi_mouv: bool
+        :param calcul: bool
+        :return: calcule les coup de toute les pieces blanches si calcul est True
+                 alors il verifie que les coup ne mette pas le roi en echec
+                 la fonction renvoie un set de tout les coups
+        """
         l = []
         for elem in self.piece_blanc:
             if elem.piece != 'roi' and elem.peut_jouer:
@@ -122,6 +142,13 @@ class Game:
         return set(l)
 
     def calcul_coup_noir(self,roi_mouv=True,calcul=True):
+        """
+            :param roi_mouv: bool
+            :param calcul: bool
+            :return: calcule les coup de toute les pieces noires si calcul est True
+                     alors il verifie que les coup ne mette pas le roi en echec
+                     la fonction renvoie un set de tout les coups
+        """
         l = []
         for elem in self.piece_noir:
             if elem.piece != 'roi' and elem.peut_jouer :
@@ -134,6 +161,9 @@ class Game:
 
 
     def afficher_echec(self):
+        """
+        :return: rend le roi du joueur actuelle rouge
+        """
         if self.couleur_joueur == 'blanc' :
             if self.roi_blanc.coordone in self.coup_noir:
                 self.roi_blanc.image = pygame.image.load('pieces_echecs/roi_rouge.png')
@@ -146,6 +176,9 @@ class Game:
                 self.roi_noir.echec = True
 
     def enlever_echec(self):
+        """
+        :return:  rend au roi de l'adversaire du joueur actuelle sa couleur original
+        """
         if self.couleur_joueur == 'blanc':
             if self.roi_noir.echec:
                 self.roi_noir.image = pygame.image.load('pieces_echecs/roi_noir.png')
@@ -160,11 +193,18 @@ class Game:
 
 
     def check_mate(self,liste):
+        """
+        :param liste: list des coups d'un joueur
+        :return: si aucun coup est possible self.afficher_mat = True et le timer s'arrete
+        """
         if len(liste) == 0 :
             self.afficher_mat = True
             self.timer_on = False
 
     def afficher_echec_et_mat(self):
+        """
+        affiche un texte qui dit le gagnent et affiche un boutton qui si cliquer renvoie au menu
+        """
         if self.couleur_joueur == 'blanc':
             couleur_gagnant = 'noir'
         else:
@@ -198,6 +238,9 @@ class Game:
 
 
     def reset(self):
+        """
+        remet permet de remettre a zero le jeu
+        """
         self.en_menu = True
         del self.echiquier
         del self.all_piece
@@ -223,6 +266,10 @@ class Game:
 
 
     def choix_mode_jeu(self,var):
+        """
+        :param var: int
+        lance le mode de jeu attribuet a var
+        """
         self.select_bot = var
         print('je suis une var : ',var)
         self.en_menu = False
