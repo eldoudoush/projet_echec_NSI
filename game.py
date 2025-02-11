@@ -50,6 +50,9 @@ class Game:
             self.afficher_echec_et_mat()
 
     def changer_couleur(self):
+        """
+        change la couleur du joueur qui joue
+        """
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
             self.coup_blanc = self.calcul_coup_blanc()
@@ -78,7 +81,7 @@ class Game:
                 print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
             elif self.select_bot == 3 :
                 #self.bot.coup_joue_min_max( 3, self.couleur_joueur)
-                print(self.bot.jouer_min_max(2,True,self.couleur_joueur,(0,"mouv"),None))
+                print(self.bot.jouer_min_max(3,True,self.couleur_joueur))
 
 
     def update_echiquier(self):

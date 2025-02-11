@@ -30,7 +30,6 @@ class Case:
 
         if not pas_suprimer:
             if self.piece.color == 'blanc':
-
                 self.echiquier.game.scene_droite.coup_joue_blanc.append((piece.piece[0],piece.coordone))
                 self.echiquier.game.scene_droite.cree_texte(piece.color)
             else:
@@ -60,7 +59,7 @@ class Case:
             self.echiquier.game.all_piece.remove(self.piece)
         self.piece = piece
         self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
-        if not self.piece is None and self.piece.piece == 'pion':
+        if self.piece.piece == 'pion':
             self.piece.premier_coup = False
 
         piece.coordone = self.coordone

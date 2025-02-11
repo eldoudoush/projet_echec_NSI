@@ -55,19 +55,18 @@ while running:
                             ga.changer_piece_selectionner(elem.piece)
                 else:
                     if click_case in ga.piece_selectione.coup :
-                        for elem in ga.echiquier.all_case:
-                            if elem.coordone == click_case:
-                                if elem.piece is None:
-                                    elem.changer_pion(ga.piece_selectione)
-                                    ga.changer_couleur()
-                                    if ga.piece_selectione.piece == 'pion' :
-                                        ga.piece_selectione.premier_coup = False
-                                    ga.changer_piece_selectionner(None)
+                        elem = ga.echiquier.jeu[click_case[0]][click_case[1]]
+                        if elem.piece is None:
+                            elem.changer_pion(ga.piece_selectione)
+                            ga.changer_couleur()
+                            if ga.piece_selectione.piece == 'pion' :
+                                ga.piece_selectione.premier_coup = False
+                            ga.changer_piece_selectionner(None)
 
-                                else:
-                                    elem.manger_pion(ga.piece_selectione)
-                                    ga.changer_couleur()
-                                    ga.changer_piece_selectionner(None)
+                        else:
+                            elem.manger_pion(ga.piece_selectione)
+                            ga.changer_couleur()
+                            ga.changer_piece_selectionner(None)
                     else :
                         piece_selec = ga.piece_selectione
                         for elem in ga.echiquier.all_case:
@@ -85,8 +84,9 @@ while running:
             elif event.key == pygame.K_e:
                 screen = pygame.display.set_mode((500,400))
                 ga =  Game(pygame.display.set_mode((500,400)))
-            #elif event.key == pygame.K_d:
-                #ga.echiquier.jeu[0][0].changer_pion(ga.echiquier.jeu[1][1].piece)
+            elif event.key == pygame.K_d:
+                x = input()
+                print(ga.echiquier.jeu[x[0],x[1]].piece)
             elif event.key == pygame.K_q:
                 ga.afficher_mat = True
             elif event.key == pygame.K_ESCAPE:

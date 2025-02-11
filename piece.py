@@ -13,14 +13,6 @@ class Pion(pygame.sprite.Sprite):
         self.color = color
         self.coup = []
         self.val = 10
-        # if color == 'blanc':
-        #     self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
-        # else:
-        #     self.image = pygame.image.load('pieces_echecs/pion_noir.png')
-        # self.image = pygame.transform.scale(self.image, (self.taille_case, self.taille_case))
-        # self.rect = self.image.get_rect()
-        # self.rect.x = self.taille_case*x
-        # self.rect.y = self.taille_case*y
         if color == 'blanc':
             image = 'pieces_echecs/pion_blanc.png'
         else:
@@ -154,8 +146,8 @@ class Fou(pygame.sprite.Sprite):
 
     def maj_position(self):
         """
-                met a jour la position de la piece en fonction de la case où elle est
-                """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
@@ -164,7 +156,7 @@ class Fou(pygame.sprite.Sprite):
         :param detect_echec: bool
         met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
         tous sinon
-                """
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -245,8 +237,8 @@ class Tour(pygame.sprite.Sprite):
 
     def maj_position(self):
         """
-                met a jour la position de la piece en fonction de la case où elle est
-                """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
@@ -255,7 +247,7 @@ class Tour(pygame.sprite.Sprite):
         :param detect_echec: bool
         met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
         tous sinon
-                """
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
