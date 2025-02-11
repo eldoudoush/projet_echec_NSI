@@ -105,7 +105,10 @@ class Bot():
         if depht == d :
             return valeur_coup(self)
 
-        couleur_suivante = 'blanc' if couleur == 'noir' else 'noir'
+        if couleur == 'noir' :
+            couleur_suivante = 'blanc'
+        else :
+            couleur_suivante = 'noir'
 
         all_coup = tout_les_coup(self,couleur)
         if est_maximisant:
@@ -181,7 +184,7 @@ def jouer_coup(bot,coup_jouer,pas_sup=True):
             coup_jouer[1].premier_coup = False"""
     bot.coup_min_max.append(coup_jouer)
     x, y = coup_jouer[0]
-    if len(coup_jouer) == 3 or bot.game.echiquier.jeu[x][y].piece is None:
+    if len(coup_jouer) == 3 :
         bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1],pas_suprimer=pas_sup)
     else:
         print('!!!!!!!!!!!!!!!!!!!!!!!!',coup_jouer)

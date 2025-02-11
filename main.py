@@ -87,6 +87,10 @@ while running:
             elif event.key == pygame.K_d:
                 x = input()
                 print(ga.echiquier.jeu[x[0],x[1]].piece)
+            elif event.key == pygame.K_3:
+                ga.echiquier.jeu[3][3].changer_pion(ga.echiquier.jeu[0][0].piece)
+
+
             elif event.key == pygame.K_q:
                 ga.afficher_mat = True
             elif event.key == pygame.K_ESCAPE:
