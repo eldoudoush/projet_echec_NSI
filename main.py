@@ -1,3 +1,4 @@
+from utilitaire.constante import screen
 from game import Game
 import pygame
 import random
@@ -5,7 +6,7 @@ import random
 
 pygame.init()
 # pygame.time.get_ticks pour avoir le nombre de tick ecoulé depuis lancement de la fenetre
-screen = pygame.display.set_mode((1000,600))
+
 
 running = True
 

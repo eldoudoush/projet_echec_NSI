@@ -4,6 +4,7 @@ from point import Point
 from scene_droite import SceneDroite
 from accueil import Accueil
 from bot import Bot
+from parametre import Parametre
 
 class Game:
     def __init__(self,screen):
@@ -30,7 +31,7 @@ class Game:
         self.select_bot = None
         self.bouton_restart = None
         self.bouton_restart_rect = None
-
+        self.parametre = Parametre(self)
 
     def update(self):
         if self.en_menu :
@@ -48,6 +49,7 @@ class Game:
                 self.screen.blit(elem.image,elem.rect)
         if self.afficher_mat :
             self.afficher_echec_et_mat()
+        self.parametre.update()
 
     def changer_couleur(self):
         """

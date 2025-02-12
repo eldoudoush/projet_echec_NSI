@@ -1,16 +1,18 @@
-import pygame
-import fonction_utile as fct
+from utilitaire import fonction_utile as fct
+from utilitaire import constante as cst
 
 class Parametre:
 
-    def __init__(self,screen,game):
-        self.screen = screen
+    def __init__(self,game):
+        self.screen = cst.screen
+        self.screen_width = self.screen.get_width()
+        self.screen_height = self.screen.get_height()
         self.game = game
-        self.icon_image,self.icon_rect = fct.import_image_resize(...)
-        self.interface_image,self.interface_rect  = fct.import_image_resize(...)
-        self.choisir_couleur_noir_rect = [x,y,size_x,size_y]
-        self.choisir_couleur_blanc_rect = [x,y,size_x,size_y]
-        self.est_afficher = False
+        self.icon_image,self.icon_rect = fct.import_image_resize('image_parametre/engrenage_parametre.png',self.screen_width/8,self.screen_width/8,7*self.screen_width/8,0)
+        self.interface_image,self.interface_rect  = fct.import_image_resize('image_parametre/parametre_bg.png',6*self.screen_width/8,6*self.screen_height/8,self.screen_width/8,self.screen_height/8)
+        # self.choisir_couleur_noir_rect = [x,y,size_x,size_y]
+        # self.choisir_couleur_blanc_rect = [x,y,size_x,size_y]
+        self.est_afficher = True
 
 
 

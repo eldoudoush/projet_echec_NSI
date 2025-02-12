@@ -1,5 +1,5 @@
 import pygame
-from fonction_utile import import_image_resize
+from utilitaire.fonction_utile import import_image_resize
 
 class Pion(pygame.sprite.Sprite):
 
