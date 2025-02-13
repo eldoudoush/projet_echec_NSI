@@ -17,14 +17,15 @@ class Case:
         else:
             self.color = (93, 190, 37)
 
-    def changer_pion(self,piece,pas_suprimer=False):
+    def changer_pion(self,piece,pas_suprimer=False,replacer_pion=False):
         """
         :param piece: piece
         :param pas_suprimer: bool
         :return:
         """
         self.piece = piece
-        self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
+        if not replacer_pion :
+            self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
         piece.coordone = self.coordone
         piece.maj_position()
 

@@ -241,7 +241,7 @@ def dejouer_un_coup(bot):
         bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1],pas_suprimer=True)
     else:
         bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1],pas_suprimer=True)
-        bot.game.echiquier.jeu[a][b].changer_pion(coup_jouer[3],pas_suprimer=True)
+        bot.game.echiquier.jeu[a][b].changer_pion(coup_jouer[3],True,True)
         if coup_jouer[3].color == 'blanc':
             bot.game.piece_blanc.append(coup_jouer[3])
         else:
