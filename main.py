@@ -31,9 +31,11 @@ while running:
 
         elif event.type == changecouleur: # ce declanche chaque quar second
             # ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
-            ga.rgb = (100,150,36)
+            ga.rgb = (100,150,50)
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
+            ga.parametre.cliquer_parametre(event.pos)
+
             if ga.en_menu:
                 if ga.ecran_accueil.play_button0_rect.collidepoint(event.pos):
                     ga.choix_mode_jeu(None)
@@ -94,6 +96,7 @@ while running:
 
             elif event.key == pygame.K_q:
                 ga.afficher_mat = True
+
             elif event.key == pygame.K_ESCAPE:
                 running = False
                 pygame.quit()
@@ -104,6 +107,10 @@ while running:
                     ga.couleur_joueur = 'blanc'
                 else:
                     ga.couleur_joueur = 'noir'
+
+            elif event.key == pygame.K_l:
+                ga.afficher_mat = True
+                ga.draw = True
 
 
     ga.update() #création de tout l'affichage graphique

@@ -9,4 +9,4 @@ def import_image_resize(image_input,size_x , size_y , x , y):
     return image ,rect
 
 def clicker(rect,pos):
-    return rect[0]<=pos[0] <= rect[2] and rect[1] <=pos[1] <= rect[3]
+    return rect[0] <= pos[0] <= rect[2] + rect[0] and rect[1] <= pos[1] <= rect[3] + rect[1]

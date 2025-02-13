@@ -125,6 +125,7 @@ class AffichagePionManger:
         self.liste_piece_manger =[]
         self.dic_piece = {'pion':0,'cheval':0,'dame':0,'roi':0,'fou':0,'tour':0}
         self.dic_emplacement_piece = {'pion':self.pos(0,0),'cheval':self.pos(1,0),'dame':self.pos(2,0),'roi':self.pos(2,1),'fou':self.pos(0,1),'tour':self.pos(1,1)}
+        self.dic_Piece_anglais = {'p' : 'P','d' : 'Q','t' : 'R','r' : 'K','f' : 'B','c': 'C'}
         self.dic_texte_piece = {'pion':None,'cheval':None,'dame':None,'roi':None,'fou':None,'tour':None}
         self.font_size =  self.width // 30
         self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF',self.font_size)
@@ -133,7 +134,8 @@ class AffichagePionManger:
         self.liste_piece_manger.append(piece)
         piece_nom = piece.piece
         self.dic_piece[piece_nom] += 1
-        self.dic_texte_piece[piece_nom] = (self.font.render( str(self.dic_piece[piece_nom])+'x', True, (255, 255, 255)), (self.dic_emplacement_piece[piece_nom]))
+        self.dic_texte_piece[piece_nom] = (self.font.render( str(self.dic_piece[piece_nom])+'x '+self.dic_Piece_anglais[piece_nom[0]], True, (255, 255, 255)), (self.dic_emplacement_piece[piece_nom]))
+        print(self.dic_Piece_anglais[piece_nom[0]])
 
     def update(self):
         for elem in self.dic_texte_piece.values():

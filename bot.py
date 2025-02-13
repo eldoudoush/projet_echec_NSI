@@ -8,13 +8,20 @@ class Bot():
         self.coup_min_max = []
 
     def calcule_coup_aleatoire(self):
-        if len(self.game.coup_noir) == 0 :
+        if self.game.couleur_joueur == 'blanc' :
+            liste_coup = self.game.coup_blanc
+            liste_piece = self.game.piece_blanc
+        else:
+            liste_coup = self.game.coup_noir
+            liste_piece = self.game.piece_noir
+
+        if len(liste_coup) == 0 :
             return 'check mate'
-        val = randint(0, len(self.game.piece_noir) - 1)
-        piece = self.game.piece_noir[val]
+        val = randint(0, len(liste_piece) - 1)
+        piece = liste_piece[val]
         while len(piece.coup) == 0 :
-            val = randint(0,len(self.game.piece_noir)-1)
-            piece = self.game.piece_noir[val]
+            val = randint(0,len(liste_piece)-1)
+            piece = liste_piece[val]
         if len(piece.coup) <= 1 :
             val2 = 0
         else:

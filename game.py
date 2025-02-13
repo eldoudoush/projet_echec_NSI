@@ -32,6 +32,8 @@ class Game:
         self.bouton_restart = None
         self.bouton_restart_rect = None
         self.parametre = Parametre(self)
+        self.couleur_bot = 'noir'
+        self.draw = False
 
     def update(self):
         if self.en_menu :
@@ -74,7 +76,7 @@ class Game:
         self.afficher_echec()
         self.enlever_echec()
 
-        if self.couleur_joueur == 'noir':
+        if self.couleur_joueur == self.couleur_bot:
             if self.select_bot is None:
                 return
             elif self.select_bot == 1 :
@@ -204,6 +206,12 @@ class Game:
         :return: si aucun coup est possible self.afficher_mat = True et le timer s'arrete
         """
         if len(liste) == 0 :
+            if self.couleur_joueur == 'blanc':
+                if not self.roi_blanc.coordone in self.coup_noir:
+                    self.draw = True
+            else:
+                if not self.roi_noir.coordone in self.coup_blanc:
+                    self.draw = True
             self.afficher_mat = True
             self.timer_on = False
 
@@ -215,8 +223,12 @@ class Game:
             couleur_gagnant = 'noir'
         else:
             couleur_gagnant = 'blanc'
+        if self.draw :
+            mot_afficher = '  il y a egalite'
+        else:
+            mot_afficher = "les "+couleur_gagnant+" ont gagne"
         font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen.get_width() // 25)
-        texte_surface = font.render("les "+couleur_gagnant+' ont gagne', True, self.rgb)
+        texte_surface = font.render(mot_afficher, True, self.rgb)
         texte_surface_rect = texte_surface.get_rect()
         texte_surface_rect.x = self.screen.get_width() / 5
         texte_surface_rect.y = self.screen.get_height() / 3
@@ -281,3 +293,7 @@ class Game:
         self.en_menu = False
         self.timer_on = True
         self.calcul_coup_blanc()
+        if self.couleur_joueur =='blanc':
+            self.couleur_bot = 'noir'
+        else:
+            self.couleur_bot = 'blanc'
