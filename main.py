@@ -45,6 +45,7 @@ while running:
                 print(click_case)
                 if ga.piece_selectione is None:
                     for elem in ga.echiquier.all_case :
+                        #ga.echiquier.jeu[5][5].rock_noir(click_case,ga.echiquier.jeu[0][0].piece)
                         if elem.coordone == click_case and not elem.piece is None and elem.piece.color == ga.couleur_joueur:
                             print(elem.piece)
                             ga.changer_piece_selectionner(elem.piece)
@@ -52,7 +53,6 @@ while running:
                     if click_case in ga.piece_selectione.coup :
                         for elem in ga.echiquier.all_case:
                             if elem.coordone == click_case:
-                                print(ga.piece_selectione.premier_coup)
                                 if elem.piece is None:
                                     elem.changer_pion(ga.piece_selectione)
                                     ga.changer_couleur()
@@ -72,7 +72,8 @@ while running:
             if event.key == pygame.K_SPACE:
                 screen = pygame.display.set_mode((0, 0),pygame.FULLSCREEN)
                 ga = Game(screen)
-
+            elif event.key == pygame.K_e:
+                ga.echiquier.jeu[5][5].changer_pion(ga.echiquier.jeu[0][0].piece)
             elif event.key == pygame.K_e:
                 screen = pygame.display.set_mode((500,400))
                 ga = Game(screen)
