@@ -18,7 +18,7 @@ class Pion(pygame.sprite.Sprite):
         else:
             image = 'pieces_echecs/pion_noir.png'
         self.image,self.rect = import_image_resize(image,self.taille_case, self.taille_case,self.taille_case*x,self.taille_case*y)
-
+        self.compteur_coup = 0
         self.coordone = (x,y)
         self.premier_coup = True
         self.echiquier = echiquier

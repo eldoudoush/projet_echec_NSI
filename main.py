@@ -111,6 +111,8 @@ while running:
             elif event.key == pygame.K_l:
                 ga.afficher_mat = True
                 ga.draw = True
+            elif event.key == pygame.K_m:
+                print(ga.piece_selectione.compteur_coup)
 
 
     ga.update() #création de tout l'affichage graphique

@@ -26,6 +26,9 @@ class Case:
         self.piece = piece
         if not replacer_pion :
             self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
+            if not self.piece is None and self.piece.piece == 'pion':
+                self.piece.premier_coup = False
+                self.piece.compteur_coup += 1
         piece.coordone = self.coordone
         piece.maj_position()
 
@@ -37,8 +40,7 @@ class Case:
             else:
                 self.echiquier.game.scene_droite.coup_joue_noir.append((piece.piece[0],piece.coordone))
                 self.echiquier.game.scene_droite.cree_texte(piece.color)
-        if not self.piece is None and self.piece.piece == 'pion':
-            self.piece.premier_coup = False
+
 
     def manger_pion(self, piece ,pas_suprimer=False):
         print(self.piece)
@@ -66,6 +68,7 @@ class Case:
 
         if self.piece.piece == 'pion':
             self.piece.premier_coup = False
+            self.piece.compteur_coup += 1
 
         piece.coordone = self.coordone
         piece.maj_position()
