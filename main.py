@@ -31,10 +31,11 @@ while running:
 
         elif event.type == changecouleur: # ce declanche chaque quar second
             # ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
-            ga.rgb = (100,150,50)
+            # ga.rgb = (100,150,50)
+            ...
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
-            ga.parametre.cliquer_parametre(event.pos)
+
 
             if ga.en_menu:
                 if ga.ecran_accueil.play_button0_rect.collidepoint(event.pos):
@@ -46,7 +47,7 @@ while running:
                 elif ga.ecran_accueil.play_button3_rect.collidepoint(event.pos):
                     ga.choix_mode_jeu(3)
 
-            if not ga.en_menu :
+            if not ga.en_menu and not ga.parametre.est_afficher :
 
                 if ga.afficher_mat and ga.bouton_restart_rect.collidepoint(event.pos):
                     ga.reset()
@@ -77,6 +78,7 @@ while running:
                                 ga.changer_piece_selectionner(elem.piece)
                         if piece_selec == ga.piece_selectione:
                             ga.changer_piece_selectionner(None)
+            ga.parametre.cliquer_parametre(event.pos)
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 

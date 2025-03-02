@@ -15,13 +15,16 @@ class Case:
         if sum(self.coordone)%2 == 0:
             self.color = (255,255,255)
         else:
-            self.color = (93, 190, 37)
+            self.color = (58,34,10) #(93, 190, 37)
 
     def changer_pion(self,piece,pas_suprimer=False,replacer_pion=False):
         """
         :param piece: piece
         :param pas_suprimer: bool
-        :return:
+        :param replacer_pion: bool
+        :return: change le pion de la case par celui pris en paramètre,
+        si pas_suprimer alors n'applique pas les modifications pour le supprimer du jeu
+        si replacer_pion alors remplace le pion de la possition precedente de la piece par un None
         """
         self.piece = piece
         if not replacer_pion :
@@ -41,7 +44,7 @@ class Case:
             self.piece.premier_coup = False
 
     def manger_pion(self, piece ,pas_suprimer=False):
-        print(self.piece)
+        # print(self.piece)
         if self.piece.color == 'blanc':
             if not pas_suprimer:
                 self.echiquier.game.scene_droite.piece_noir_manger.creer_texte(self.piece)

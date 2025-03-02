@@ -26,7 +26,7 @@ class Bot():
             val2 = 0
         else:
             val2 = randint(0,len(piece.coup)-1)
-        print(val2)
+        # print(val2)
         x,y = piece.coup[val2]
 
         if self.game.echiquier.jeu[x][y].piece is None :
@@ -96,7 +96,7 @@ class Bot():
             pos_neg = False
 
         meilleurcoup = self.calcule_meilleur_coup(couleur_actuelle,calcul=True,compte_pos_neg=pos_neg)
-        print('bot calcule fors :',d,' la liste a traite ',meilleurcoup)
+        # print('bot calcule fors :',d,' la liste a traite ',meilleurcoup)
         score_actuel = score + meilleurcoup[-1]
 
         for i in range(len(meilleurcoup[0])-2) :
@@ -118,6 +118,9 @@ class Bot():
             couleur_suivante = 'noir'
 
         all_coup = tout_les_coup(self,couleur)
+        if all_coup == 'check mate':
+            return inf if est_maximisant else -inf
+
         if est_maximisant:
             meilleur_score = -inf
             for mouvement in all_coup :
@@ -125,7 +128,7 @@ class Bot():
                 score = self.min_max(d,False,couleur_suivante,depht +1)
                 dejouer_un_coup(self)
                 meilleur_score = max(meilleur_score, score)
-                print("c'est le coup jouer ", mouvement,'et la profonduer : ',depht, ' et le score: ',score)
+                # print("c'est le coup jouer ", mouvement,'et la profonduer : ',depht, ' et le score: ',score)
             return meilleur_score
         else:
             meilleur_score = inf
@@ -134,7 +137,7 @@ class Bot():
                 score = self.min_max(d,True,couleur_suivante,depht + 1)
                 dejouer_un_coup(self)
                 meilleur_score = min(meilleur_score, score)
-                print("c'est le coup jouer ", mouvement, 'et la profonduer : ', depht, ' et le score: ', score)
+                # print("c'est le coup jouer ", mouvement, 'et la profonduer : ', depht, ' et le score: ', score)
             return meilleur_score
 
     def jouer_min_max(self,d,est_maximisant,couleur):
@@ -169,7 +172,7 @@ class Bot():
                 meilleur_score = coup[1]
             elif coup[1] == meilleur_score:
                 coup_a_joue.append(coup[0])
-        print('les coup de la zion',coup_a_joue,'les autreeeeeeeeeeee ',self.coup_min_max)
+        # print('les coup de la zion',coup_a_joue,'les autreeeeeeeeeeee ',self.coup_min_max)
 
         jouer_coup_random(self, coup_a_joue)
         self.game.changer_couleur()
@@ -194,8 +197,8 @@ def jouer_coup(bot,coup_jouer,pas_sup=True):
     if len(coup_jouer) == 3 :
         bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1],pas_suprimer=pas_sup)
     else:
-        print('!!!!!!!!!!!!!!!!!!!!!!!!',coup_jouer)
-        print('?????????????????????????',bot.game.echiquier.jeu[x][y].piece)
+        # print('!!!!!!!!!!!!!!!!!!!!!!!!',coup_jouer)
+        # print('?????????????????????????',bot.game.echiquier.jeu[x][y].piece)
         bot.game.echiquier.jeu[x][y].manger_pion(coup_jouer[1],pas_suprimer=pas_sup)
     if coup_jouer[1].piece == 'pion':
         coup_jouer[1].premier_coup = False
@@ -207,7 +210,7 @@ def jouer_coup_random(bot,liste):
         randnb = randint(0, len(liste) - 1)
     if randnb > len(liste)-1 :
         return
-    print(liste)
+    # print(liste)
     coup = liste[randnb]
     x,y = coup[0]
     if len(coup) == 3:
