@@ -1,4 +1,5 @@
 import pygame
+from utilitaire.fonction_utile import import_image_resize
 
 class Pion(pygame.sprite.Sprite):
 
@@ -11,25 +12,31 @@ class Pion(pygame.sprite.Sprite):
         self.taille_case = self.screen_height / 8
         self.color = color
         self.coup = []
+        self.val = 10
         if color == 'blanc':
-            self.image = pygame.image.load('pieces_echecs/pion_blanc.png')
+            image = 'pieces_echecs/pion_blanc.png'
         else:
-            self.image = pygame.image.load('pieces_echecs/pion_noir.png')
-        self.image = pygame.transform.scale(self.image, (self.taille_case, self.taille_case))
-        self.rect = self.image.get_rect()
-        self.rect.x = self.taille_case*x
-        self.rect.y = self.taille_case*y
+            image = 'pieces_echecs/pion_noir.png'
+        self.image,self.rect = import_image_resize(image,self.taille_case, self.taille_case,self.taille_case*x,self.taille_case*y)
+
         self.coordone = (x,y)
         self.premier_coup = True
         self.echiquier = echiquier
         self.visible = True
-        self.nb_coup = 0
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec=False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -41,11 +48,11 @@ class Pion(pygame.sprite.Sprite):
                     else :
                         ajoute_coup_pas_echec(self, (x,y - i), self.echiquier, roi=False,calcul=detect_echec)
             else:
-                if self.echiquier.jeu[x][y -1].piece is None:
+                if out_of_board((x,y - 1)) and self.echiquier.jeu[x][y -1].piece is None:
                     ajoute_coup_pas_echec(self, (x, y-1), self.echiquier, roi=False,calcul=detect_echec)
-            if x < 7 and not self.echiquier.jeu[x+1][y -1].piece is None and self.echiquier.jeu[x+1][y -1].piece.color != self.color :
+            if out_of_board((x+1,y -1)) and not self.echiquier.jeu[x+1][y -1].piece is None and self.echiquier.jeu[x+1][y -1].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (x+1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
-            if x > 0 and not self.echiquier.jeu[x-1][y -1].piece is None and self.echiquier.jeu[x-1][y -1].piece.color != self.color:
+            if out_of_board((x-1,y -1)) and not self.echiquier.jeu[x-1][y -1].piece is None and self.echiquier.jeu[x-1][y -1].piece.color != self.color:
                 ajoute_coup_pas_echec(self, (x-1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
 
         else :
@@ -56,15 +63,12 @@ class Pion(pygame.sprite.Sprite):
                     else :
                         ajoute_coup_pas_echec(self, (x,y + i), self.echiquier, roi=False,calcul=detect_echec)
             else:
-                if y<7 :
-                    if self.echiquier.jeu[x][y +1].piece is None :
-                        ajoute_coup_pas_echec(self, (x, y+1), self.echiquier, roi=False,calcul=detect_echec)
-            if x < 7 and y<7:
-                if not self.echiquier.jeu[x+1][y +1].piece is None and self.echiquier.jeu[x+1][y +1].piece.color != self.color :
-                    ajoute_coup_pas_echec(self, (x+1, y +1), self.echiquier, roi=False,calcul=detect_echec)
-            if x > 0 and y<7:
-                if not self.echiquier.jeu[x-1][y +1].piece is None and self.echiquier.jeu[x-1][y +1].piece.color != self.color:
-                    ajoute_coup_pas_echec(self, (x-1, y +1), self.echiquier, roi=False,calcul=detect_echec)
+                if out_of_board((x,y + 1)) and self.echiquier.jeu[x][y +1].piece is None:
+                    ajoute_coup_pas_echec(self, (x, y+1), self.echiquier, roi=False,calcul=detect_echec)
+            if out_of_board((x+1,y +1)) and not self.echiquier.jeu[x+1][y +1].piece is None and self.echiquier.jeu[x+1][y +1].piece.color != self.color :
+                ajoute_coup_pas_echec(self, (x+1, y +1), self.echiquier, roi=False,calcul=detect_echec)
+            if out_of_board((x-1,y +1)) and not self.echiquier.jeu[x-1][y +1].piece is None and self.echiquier.jeu[x-1][y +1].piece.color != self.color:
+                ajoute_coup_pas_echec(self, (x-1, y +1), self.echiquier, roi=False,calcul=detect_echec)
 
 
     def promo_pion(self):
@@ -96,6 +100,7 @@ class Cheval(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.val = 30
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/cheval_blanc.png')
         else:
@@ -108,13 +113,20 @@ class Cheval(pygame.sprite.Sprite):
         self.coup = []
         self.premier_coup = True
         self.visible = True
-        self.nb_coup = 0
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+                """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -138,6 +150,7 @@ class Fou(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.val = 30
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/fou_blanc.png')
         else:
@@ -150,13 +163,20 @@ class Fou(pygame.sprite.Sprite):
         self.coup = []
         self.premier_coup = True
         self.visible = True
-        self.nb_coup = 0
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -222,6 +242,7 @@ class Tour(pygame.sprite.Sprite):
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
+        self.val = 50
         if color == 'blanc':
             self.image = pygame.image.load('pieces_echecs/tour_blanc.png')
         else:
@@ -234,13 +255,20 @@ class Tour(pygame.sprite.Sprite):
         self.coup = []
         self.premier_coup = True
         self.visible = True
-        self.nb_coup = 0
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -290,6 +318,7 @@ class Reine(pygame.sprite.Sprite):
         self.piece='dame'
         self.peut_jouer = True
         self.echiquier=echiquier
+        self.val = 90
         super().__init__()
         self.screen = screen
         self.screen_height = screen.get_height()
@@ -307,13 +336,20 @@ class Reine(pygame.sprite.Sprite):
         self.coup=[]
         self.premier_coup = True
         self.visible = True
-        self.nb_coup = 0
 
     def maj_position(self):
+        """
+        met a jour la position de la piece en fonction de la case où elle est
+        """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+        """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -415,6 +451,7 @@ class Roi(pygame.sprite.Sprite):
         self.echiquier = echiquier
         self.piece = 'roi'
         self.peut_jouer = True
+        self.val = 900
         self.screen_height = screen.get_height()
         self.taille_case = self.screen_height / 8
         self.color = color
@@ -432,13 +469,21 @@ class Roi(pygame.sprite.Sprite):
         self.visible = True
         self.rockD=False
         self.rockG=False
-        self.nb_coup=0
+        self.echec = False
 
     def maj_position(self):
+        """
+                met a jour la position de la piece en fonction de la case où elle est
+                """
         self.rect.x = self.taille_case * self.coordone[0]
         self.rect.y = self.taille_case * self.coordone[1]
 
     def coup_possible(self,detect_echec = False):
+        """
+        :param detect_echec: bool
+        met dans self.coup tout les coup possible de la piece avec un empechement d'echec si detect_echec = True
+        tous sinon
+                """
         self.coup.clear()
         x = self.coordone[0]
         y = self.coordone[1]
@@ -447,18 +492,19 @@ class Roi(pygame.sprite.Sprite):
             a, b = elem
             if self.color == 'blanc':
                 if out_of_board(elem) and self.echiquier.jeu[a][b].piece is None :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True ,calcul=detect_echec )
 
                 elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][
                     b].piece.color != self.color :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True,calcul=detect_echec )
+
             else:
                 if out_of_board(elem) and self.echiquier.jeu[a][b].piece is None :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True ,calcul=detect_echec)
 
                 elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][
                     b].piece.color != self.color :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
+                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True,calcul=detect_echec )
 
         if self.color == 'blanc':
             if self.premier_coup and self.echiquier.jeu[0][7].piece is not None :
@@ -496,6 +542,10 @@ class Roi(pygame.sprite.Sprite):
         return self.coup
 
 def out_of_board(a):
+    """
+    :param a: tuple modelisant un coordone
+    :return: True si a est dans l'echiquier False sinon
+    """
     x,y = a
     return 0 <= x <= 7 and 0 <= y <= 7
 
@@ -504,9 +554,17 @@ class PieceImaginaire:
         self.piece = 'ima'
         self.color = 'pas'
         self.visible = True
-        self.nb_coup=0
 
 def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
+    """
+    :param piece: piece de l'echiquier
+    :param coordonne: tuple( coordonner ou il veut se rendre)
+    :param echiquier: l'echiquier
+    :param roi: bool
+    :param calcul: bool
+    rajoute le coup a piece.coup si calcul = False sinon regarde si le coup met en echec le roi de la piece
+    si oui ne l'ajoute pas sinon l'ajoute
+    """
     if not calcul :
         piece.coup.append(coordonne)
         return
@@ -515,7 +573,6 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
     piece.visible = False
     pieceima = PieceImaginaire()
     couleur = None
-    L_coup = {}
     if echiquier.jeu[x][y].piece is None :
         echiquier.jeu[x][y].piece = pieceima
     else:
@@ -525,28 +582,24 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
 
     if piece.color == 'blanc':
         co_roi = echiquier.game.roi_blanc.coordone
-        L_coup = echiquier.game.calcul_coup_noir(calcul=False)
+        L_coup = echiquier.game.calcul_coup_noir(roi_mouv=True,calcul=False)
     else:
         co_roi = echiquier.game.roi_noir.coordone
-        L_coup = echiquier.game.calcul_coup_blanc(calcul=False)
+        L_coup = echiquier.game.calcul_coup_blanc(roi_mouv=True,calcul=False)
     if echiquier.jeu[x][y].piece.piece == 'ima' :
         echiquier.jeu[x][y].piece = None
     else:
         echiquier.jeu[x][y].piece.color = couleur
         echiquier.jeu[x][y].piece.peut_jouer = True
-    del (pieceima)
+    del(pieceima)
     piece.visible = True
 
     if roi:
-
         if coordonne in L_coup:
-            print(piece.piece)
-            print(L_coup)
-            del(L_coup)
             return
     elif  co_roi in L_coup:
-        print(piece.piece)
-        print(L_coup)
-        del(L_coup)
         return
+
     piece.coup.append(coordonne)
+
+
