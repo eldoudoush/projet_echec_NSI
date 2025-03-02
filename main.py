@@ -45,7 +45,6 @@ while running:
                 print(click_case)
                 if ga.piece_selectione is None:
                     for elem in ga.echiquier.all_case :
-                        #ga.echiquier.jeu[5][5].rock_noir(click_case,ga.echiquier.jeu[0][0].piece)
                         if elem.coordone == click_case and not elem.piece is None and elem.piece.color == ga.couleur_joueur:
                             print(elem.piece)
                             ga.changer_piece_selectionner(elem.piece)
@@ -54,13 +53,19 @@ while running:
                         for elem in ga.echiquier.all_case:
                             if elem.coordone == click_case:
                                 if elem.piece is None:
+                                    if ga.piece_selectione.piece=='roi':
+                                        elem.rock(click_case,ga.piece_selectione, ga)
                                     elem.changer_pion(ga.piece_selectione)
+                                    if ga.piece_selectione.piece == 'pion':
+                                        ga.piece_selectione.promo_pion()
                                     ga.changer_couleur()
                                     ga.piece_selectione.premier_coup = False
                                     ga.changer_piece_selectionner(None)
 
                                 else:
                                     elem.manger_pion(ga.piece_selectione)
+                                    if ga.piece_selectione.piece == 'pion':
+                                        ga.piece_selectione.promo_pion()
                                     ga.changer_couleur()
                                     ga.piece_selectione.premier_coup = False
                                     ga.changer_piece_selectionner(None)
@@ -73,8 +78,6 @@ while running:
                 screen = pygame.display.set_mode((0, 0),pygame.FULLSCREEN)
                 ga = Game(screen)
             elif event.key == pygame.K_e:
-                ga.echiquier.jeu[5][5].changer_pion(ga.echiquier.jeu[0][0].piece)
-            elif event.key == pygame.K_e:
                 screen = pygame.display.set_mode((500,400))
                 ga = Game(screen)
             elif event.key == pygame.K_d:
@@ -84,7 +87,6 @@ while running:
             elif event.key == pygame.K_z:
                 ga.piece_selectione = None
                 print('pion deselectione')
-
             elif event.key == pygame.K_h:
                 if ga.couleur_joueur == 'noir':
                     ga.couleur_joueur = 'blanc'
