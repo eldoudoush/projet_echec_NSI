@@ -17,6 +17,7 @@ changecouleur = pygame.USEREVENT + 2
 pygame.time.set_timer(changecouleur, 250)
 ga = Game(screen)
 
+
 while running:
     #event pygame
     for event in pygame.event.get():
@@ -55,6 +56,7 @@ while running:
                 int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
                 if ga.piece_selectione is None:
                     for elem in ga.echiquier.all_case :
+                        #ga.echiquier.jeu[5][5].rock_noir(click_case,ga.echiquier.jeu[0][0].piece)
                         if elem.coordone == click_case and not elem.piece is None and elem.piece.color == ga.couleur_joueur:
                             ga.changer_piece_selectionner(elem.piece)
                 else:
@@ -85,7 +87,8 @@ while running:
             if event.key == pygame.K_SPACE:
                 screen = pygame.display.set_mode((0, 0),pygame.FULLSCREEN)
                 ga = Game(screen)
-
+            elif event.key == pygame.K_e:
+                ga.echiquier.jeu[5][5].changer_pion(ga.echiquier.jeu[0][0].piece)
             elif event.key == pygame.K_e:
                 screen = pygame.display.set_mode((500,400))
                 ga =  Game(pygame.display.set_mode((500,400)))
