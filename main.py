@@ -1,4 +1,5 @@
 from game import Game
+from utilitaire.constante import screen
 import pygame
 import random
 
@@ -69,17 +70,6 @@ while running:
                             if ga.piece_selectione.piece == 'pion' :
                                 ga.piece_selectione.premier_coup = False
                             ga.changer_piece_selectionner(None)
-                        for elem in ga.echiquier.all_case:
-                            if elem.coordone == click_case:
-                                if elem.piece is None:
-                                    if ga.piece_selectione.piece=='roi':
-                                        elem.rock(click_case,ga.piece_selectione, ga)
-                                    elem.changer_pion(ga.piece_selectione)
-                                    if ga.piece_selectione.piece == 'pion':
-                                        ga.piece_selectione.promo_pion()
-                                    ga.changer_couleur()
-                                    ga.piece_selectione.premier_coup = False
-                                    ga.changer_piece_selectionner(None)
 
                         else:
                             elem.manger_pion(ga.piece_selectione)
