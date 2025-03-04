@@ -1,44 +1,26 @@
 from random import randint
 from math import inf
 
-class Bot():
+class Bot:
 
     def __init__(self,game):
-        self.game= game
-        self.coup_min_max = []
+        self.game= game #class game
+        self.coup_min_max = [] #liste qui est géré comme une pile des coups joués par le bot s'il est en minmax
 
     def calcule_coup_aleatoire(self):
-        if self.game.couleur_joueur == 'blanc' :
-            liste_coup = self.game.coup_blanc
-            liste_piece = self.game.piece_blanc
-        else:
-            liste_coup = self.game.coup_noir
-            liste_piece = self.game.piece_noir
+        """
+        :return: joue un coup aléatoire parmie tous les coups possibles
+        """
+        tous_coup = tout_les_coup(self,self.game.couleur_bot)
+        if tous_coup == 'check mate':
+            print('check mate')
+            return
+        jouer_coup_random(self,tous_coup)
 
-        if len(liste_coup) == 0 :
-            return 'check mate'
-        val = randint(0, len(liste_piece) - 1)
-        piece = liste_piece[val]
-        while len(piece.coup) == 0 :
-            val = randint(0,len(liste_piece)-1)
-            piece = liste_piece[val]
-        if len(piece.coup) <= 1 :
-            val2 = 0
-        else:
-            val2 = randint(0,len(piece.coup)-1)
-        # print(val2)
-        x,y = piece.coup[val2]
-
-        if self.game.echiquier.jeu[x][y].piece is None :
-            self.game.echiquier.jeu[x][y].changer_pion(piece)
-        else :
-            self.game.echiquier.jeu[x][y].manger_pion(piece)
-        if piece.piece == 'pion':
-            piece.premier_coup = False
         self.game.changer_couleur()
 
-    def calcule_meilleur_coup(self,couleur,calcul=False,compte_pos_neg=False):
-        meilleur_coup_score = 0
+    def calcule_meilleur_coup(self,couleur):
+        meilleur_coup_score = -inf
         liste_coup_renvoye = []
 
         if couleur == 'blanc':
@@ -66,47 +48,14 @@ class Bot():
                     elif val == meilleur_coup_score :
                         liste_coup_renvoye.append((coup, piece, piece.coordone,self.game.echiquier.jeu[x][y].piece))
                 else :
-                    if meilleur_coup_score == 0:
+                    if meilleur_coup_score < 0:
                         liste_coup_renvoye.append((coup, piece, piece.coordone))
-        if compte_pos_neg:
-            liste_coup_renvoye = [liste_coup_renvoye,-meilleur_coup_score]
-        else:
-            liste_coup_renvoye = [liste_coup_renvoye, meilleur_coup_score]
 
-        if not calcul :
-            jouer_coup_random(self,liste_coup_renvoye[0])
-            self.game.changer_couleur()
-
-        if calcul :
-            return liste_coup_renvoye
+        jouer_coup_random(self,liste_coup_renvoye[0])
+        self.game.changer_couleur()
 
 
-    def calcule_coup_minmax(self,depth,couleur,score=0,d=0):
-        if d == depth :
-            return score
 
-        if d%2 == 0 :
-            couleur_actuelle = couleur
-            pos_neg = True #dit si on compte en positif ou en negatif la valeur du coup True = positif
-        elif couleur == 'blanc':
-            couleur_actuelle = 'noir'
-            pos_neg = False
-        else :
-            couleur_actuelle = 'blanc'
-            pos_neg = False
-
-        meilleurcoup = self.calcule_meilleur_coup(couleur_actuelle,calcul=True,compte_pos_neg=pos_neg)
-        # print('bot calcule fors :',d,' la liste a traite ',meilleurcoup)
-        score_actuel = score + meilleurcoup[-1]
-
-        for i in range(len(meilleurcoup[0])-2) :
-            if score >= meilleurcoup[-1]:
-                break
-            coup_actuel = meilleurcoup[i]
-            jouer_coup(self, coup_actuel)
-
-            self.calcule_coup_minmax(depth, couleur, score=score_actuel  ,d=d + 1)
-            dejouer_un_coup(self, coup_actuel)
 
     def min_max(self,d,est_maximisant,couleur,depht):
         if depht == d :
@@ -145,11 +94,15 @@ class Bot():
         meilleur_move = []
         meilleur_score = -inf
         couleur_suivante = 'blanc' if couleur == 'noir' else 'noir'
-        for move in tout_les_coup(self,couleur):
+        tout_coup = tout_les_coup(self,couleur)
+        if tout_coup == 'check mate' :
+            return
+        for move in tout_coup:
             jouer_coup(self,move)
             score_actuelle = self.min_max( d , not est_maximisant,couleur_suivante,1)
             dejouer_un_coup(self)
             if score_actuelle > meilleur_score:
+                meilleur_move.clear()
                 meilleur_score = score_actuelle
                 meilleur_move.append(move)
             elif score_actuelle == meilleur_score:
@@ -159,39 +112,17 @@ class Bot():
         self.game.changer_couleur()
 
 
-    def coup_joue_min_max(self,depth,couleur):
-        self.coup_min_max.clear()
-        self.calcule_coup_minmax(depth,couleur)
-        coup_a_joue =  []
-        meilleur_score = -inf
-
-        for coup in self.coup_min_max :
-            if coup[1] > meilleur_score:
-                coup_a_joue.clear()
-                coup_a_joue.append(coup[0])
-                meilleur_score = coup[1]
-            elif coup[1] == meilleur_score:
-                coup_a_joue.append(coup[0])
-        # print('les coup de la zion',coup_a_joue,'les autreeeeeeeeeeee ',self.coup_min_max)
-
-        jouer_coup_random(self, coup_a_joue)
-        self.game.changer_couleur()
-
 
 
 
 def jouer_coup(bot,coup_jouer,pas_sup=True):
-    """for i in range(0,len(liste),2):
-        randnb = randint(0, len(liste[i]) - 1)
-        coup_jouer = liste[i][randnb]
-        print("c'est le coup jouer ",coup_jouer)
-        x, y = coup_jouer[0]
-        if len(coup_jouer) == 3:
-            bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1])
-        else:
-            bot.game.echiquier.jeu[x][y].manger_pion(coup_jouer[1])
-        if coup_jouer[1].piece == 'pion':
-            coup_jouer[1].premier_coup = False"""
+    """
+    :param bot:  objet class Bot
+    :param coup_jouer: tuple de 3 ou 4 element [case où bouger,piece,case actuelle,piece manger si piece sur la case en 1ere pos]
+    :param pas_sup: a mettre True si le coup est pour le calcule pas pour etre jouer
+    :return: joue le coup decrit dans coup_jouer
+    """
+
     bot.coup_min_max.append(coup_jouer)
     x, y = coup_jouer[0]
     if len(coup_jouer) == 3 :
@@ -204,6 +135,11 @@ def jouer_coup(bot,coup_jouer,pas_sup=True):
         coup_jouer[1].premier_coup = False
 
 def jouer_coup_random(bot,liste):
+    """
+    :param bot: objet class Bot
+    :param liste: liste de multiple coup chacun un tuple de 3 ou 4 element [case où bouger,piece,case actuelle,piece manger si piece sur la case en 1ere pos]
+    :return: joue un coup aléatoire de la liste donner
+    """
     if len(liste) <= 1 :
         randnb = 0
     else:
@@ -218,21 +154,11 @@ def jouer_coup_random(bot,liste):
     else:
         bot.game.echiquier.jeu[x][y].manger_pion(coup[1])
 
-def jouer_coup_exact(bot,liste):
-    if liste is None:
-        return
-    for i in range(0,len(liste),2):
-        elem = liste[i]
-        coup_jouer = elem
-        x, y = elem[0]
-        if len(elem) == 3:
-            bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1],pas_suprimer=True)
-        else:
-            bot.game.echiquier.jeu[x][y].manger_pion(coup_jouer[1],pas_suprimer=True)
-        if coup_jouer[1].piece == 'pion':
-            coup_jouer[1].premier_coup = False
-
 def dejouer_un_coup(bot):
+    """
+    :param bot: objet class Bot
+    :return: dejou le dernier coup de la liste se situant dans bot
+    """
 
     if len(bot.coup_min_max) == 0 :
         return 'probleme de bz'
@@ -251,21 +177,36 @@ def dejouer_un_coup(bot):
             bot.game.piece_noir.append(coup_jouer[3])
 
     if coup_jouer[1].piece == 'pion':
-        coup_jouer[1].premier_coup = True
+        coup_jouer[1].compteur_coup -= 2
+        if coup_jouer[1].compteur_coup == 0:
+            coup_jouer[1].premier_coup = True
 
 def valeur_coup(bot) :
+    """
+    :param bot: objet class Bot
+    :return: renvoie la valeur du plateau selon la couleur du bot
+    """
     score_coup = 0
-    for elem in bot.game.piece_noir:
-        score_coup += elem.val
-    for elem in bot.game.piece_blanc:
-        score_coup -= elem.val
+    if bot.game.couleur_bot == 'noir':
+        for elem in bot.game.piece_noir:
+            score_coup += elem.val
+        for elem in bot.game.piece_blanc:
+            score_coup -= elem.val
+    else:
+        for elem in bot.game.piece_noir:
+            score_coup -= elem.val
+        for elem in bot.game.piece_blanc:
+            score_coup += elem.val
     return score_coup
 
 def tout_les_coup(bot,couleur):
+    """
+    :param bot: objet class Bot
+    :param couleur: couleur dont on veut calculer tous les coups
+    :return: liste contenant tous les coups jouables
+    """
     liste_coup_jouable = []
-
     if couleur == 'blanc':
-        # bot.game.calcul_coup_blanc()
         bot.game.calcul_coup_noir()
         coup_blanc = bot.game.calcul_coup_blanc(True)
         liste_piece = bot.game.piece_blanc
@@ -273,7 +214,7 @@ def tout_les_coup(bot,couleur):
             return 'check mate'
     else:
         liste_piece = bot.game.piece_noir
-        # bot.game.calcul_coup_noir()
+
         bot.game.calcul_coup_blanc()
         coup_noir = bot.game.calcul_coup_noir(True)
         if len(coup_noir) == 0:
@@ -287,21 +228,3 @@ def tout_les_coup(bot,couleur):
             liste_coup_jouable.append(coup)
     return liste_coup_jouable
 
-
-# for i in range(len(liste)-2,-1,-2):
-#         elem = liste[i]
-#         coup_jouer = elem
-#         x, y = elem[2]
-#         a,b = elem[0]
-#         if len(coup_jouer) == 3:
-#             bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1])
-#         else:
-#             bot.game.echiquier.jeu[x][y].changer_pion(coup_jouer[1])
-#             bot.game.echiquier.jeu[a][b].changer_pion(coup_jouer[3])
-#             if coup_jouer[3].color == 'blanc':
-#                 bot.game.piece_blanc.append(coup_jouer[3])
-#             else:
-#                 bot.game.piece_noir.append(coup_jouer[3])
-#
-#             if coup_jouer[1].piece == 'pion' :
-#                 coup_jouer[1].premier_coup = True

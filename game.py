@@ -72,7 +72,7 @@ class Game:
         elif self.couleur_joueur == 'noir':
             self.couleur_joueur = 'blanc'
             self.coup_noir = self.calcul_coup_noir()
-            self.coup_blanc = self.calcul_coup_blanc()
+            self.coup_blanc = self.calcul_coup_blanc(True)
             self.check_mate(self.coup_blanc)
 
         else:
@@ -87,9 +87,9 @@ class Game:
             elif self.select_bot == 1 :
                 self.bot.calcule_coup_aleatoire()
             elif self.select_bot == 2:
-                print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
+                #self.bot.calcule_meilleur_coup(self.couleur_joueur)
+                print(self.bot.jouer_min_max(2, True, self.couleur_joueur))
             elif self.select_bot == 3 :
-                #self.bot.coup_joue_min_max( 3, self.couleur_joueur)
                 print(self.bot.jouer_min_max(3,True,self.couleur_joueur))
 
 
@@ -158,7 +158,7 @@ class Game:
         """
             :param roi_mouv: bool
             :param calcul: bool
-            :return: calcule les coup de toute les pieces noires si calcul est True
+            :return: calcule les coups de toute les pieces noires si calcul est True
                      alors il verifie que les coup ne mette pas le roi en echec
                      la fonction renvoie un set de tout les coups
         """
@@ -304,7 +304,7 @@ class Game:
             elif self.select_bot == 1:
                 self.bot.calcule_coup_aleatoire()
             elif self.select_bot == 2:
-                print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
+                self.bot.calcule_meilleur_coup(self.couleur_joueur)
             elif self.select_bot == 3:
                 # self.bot.coup_joue_min_max( 3, self.couleur_joueur)
                 print(self.bot.jouer_min_max(3, True, self.couleur_joueur))
