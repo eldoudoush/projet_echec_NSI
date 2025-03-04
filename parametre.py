@@ -18,6 +18,10 @@ class Parametre:
         self.deriere_noir_rect = [self.x*4-self.x/16 ,self.y*5-self.x/16 ,7*self.x/8,7*self.x/8]
         self.choisir_couleur_blanc_rect = [self.x*5 ,self.y*5 ,6*self.x/8,6*self.x/8]
         self.deriere_blanc_rect = [self.x * 5 - self.x / 16, self.y * 5 - self.x / 16, 7 * self.x / 8, 7 * self.x / 8]
+        self.redemarer_rect = [self.x *3/2 , self.y * 4.5 , 2 * self.x ,  self.x ]
+        self.redemarer_font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//30)
+        self.redemarer_texte = self.redemarer_font.render("retourner", True, (0, 0, 0))
+        self.redemarer_textedessous = self.redemarer_font.render("au menu", True, (0, 0, 0))
         self.est_afficher = False
 
 
@@ -27,23 +31,33 @@ class Parametre:
             self.est_afficher = not self.est_afficher
         if self.est_afficher :
             self.cliquer_couleur_choisie(pos)
+            if not self.game.en_menu :
+                if fct.clicker(self.redemarer_rect,pos) :
+                    self.game.reset()
+                    print('reset')
+
 
     def cliquer_couleur_choisie(self,pos):
         if self.game.en_menu :
             if fct.clicker(self.choisir_couleur_blanc_rect,pos) :
-                self.game.couleur_joueur = 'blanc'
+                self.game.couleur_bot = 'noir'
             elif fct.clicker(self.choisir_couleur_noir_rect,pos) :
-                self.game.couleur_joueur = 'noir'
+                self.game.couleur_bot = 'blanc'
 
     def update(self):
         self.screen.blit(self.icon_image, self.icon_rect)
         if self.est_afficher :
             self.screen.blit(self.interface_image,self.interface_rect)
             if self.game.en_menu :
-                if self.game.couleur_joueur == 'noir':
-                    pygame.draw.rect(self.screen, 'green', self.deriere_noir_rect)
-                else :
+                if self.game.couleur_bot == 'noir':
                     pygame.draw.rect(self.screen, 'green', self.deriere_blanc_rect)
+                else :
+                    pygame.draw.rect(self.screen, 'green', self.deriere_noir_rect)
                 pygame.draw.rect(self.screen,(0,0,0),self.choisir_couleur_noir_rect)
 
                 pygame.draw.rect(self.screen, (255,255,255), self.choisir_couleur_blanc_rect)
+            else:
+                pygame.draw.rect(self.screen,(58,34,10), self.redemarer_rect)
+                self.screen.blit(self.redemarer_texte,(self.redemarer_rect[0]+self.x/5, self.redemarer_rect[1]+self.x/5 ))
+                self.screen.blit(self.redemarer_textedessous,
+                                 (self.redemarer_rect[0] + self.x / 5, self.redemarer_rect[1] + self.x / 5 + 5 *self.redemarer_texte.get_rect()[3]/4))

@@ -1,5 +1,5 @@
-from utilitaire.constante import screen
 from game import Game
+from utilitaire.constante import screen
 import pygame
 import random
 
@@ -32,12 +32,13 @@ while running:
 
         elif event.type == changecouleur: # ce declanche chaque quar second
             # ga.rgb = (random.randint(0,255), random.randint(0,255), random.randint(0,255))
-            ga.rgb = (100,150,50)
+            # ga.rgb = (100,150,50)
+            ...
 
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
-            ga.parametre.cliquer_parametre(event.pos)
 
-            if ga.en_menu:
+
+            if ga.en_menu and not ga.parametre.est_afficher:
                 if ga.ecran_accueil.play_button0_rect.collidepoint(event.pos):
                     ga.choix_mode_jeu(None)
                 elif ga.ecran_accueil.play_button1_rect.collidepoint(event.pos):
@@ -47,16 +48,18 @@ while running:
                 elif ga.ecran_accueil.play_button3_rect.collidepoint(event.pos):
                     ga.choix_mode_jeu(3)
 
-            if not ga.en_menu :
+            if not ga.en_menu and not ga.parametre.est_afficher :
 
                 if ga.afficher_mat and ga.bouton_restart_rect.collidepoint(event.pos):
                     ga.reset()
                 click_case = (
                 int(event.pos[0] // (screen.get_height() / 8)), int(event.pos[1] // (screen.get_height() / 8)))
+                print(click_case)
                 if ga.piece_selectione is None:
                     for elem in ga.echiquier.all_case :
                         #ga.echiquier.jeu[5][5].rock_noir(click_case,ga.echiquier.jeu[0][0].piece)
                         if elem.coordone == click_case and not elem.piece is None and elem.piece.color == ga.couleur_joueur:
+                            print(elem.piece)
                             ga.changer_piece_selectionner(elem.piece)
                 else:
                     if click_case in ga.piece_selectione.coup :
@@ -70,8 +73,11 @@ while running:
 
                         else:
                             elem.manger_pion(ga.piece_selectione)
+                            if ga.piece_selectione.piece == 'pion':
+                                ga.piece_selectione.promo_pion()
                             ga.changer_couleur()
                             ga.changer_piece_selectionner(None)
+
                     else :
                         piece_selec = ga.piece_selectione
                         for elem in ga.echiquier.all_case:
@@ -79,6 +85,7 @@ while running:
                                 ga.changer_piece_selectionner(elem.piece)
                         if piece_selec == ga.piece_selectione:
                             ga.changer_piece_selectionner(None)
+            ga.parametre.cliquer_parametre(event.pos)
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
@@ -106,16 +113,12 @@ while running:
 
 
             elif event.key == pygame.K_h:
-                if ga.couleur_joueur == 'noir':
-                    ga.couleur_joueur = 'blanc'
-                else:
-                    ga.couleur_joueur = 'noir'
+                print(ga.scene_droite.coup_joue_blanc)
+                print(ga.scene_droite.coup_joue_noir)
 
             elif event.key == pygame.K_l:
                 ga.afficher_mat = True
                 ga.draw = True
-            elif event.key == pygame.K_m:
-                print(ga.piece_selectione.compteur_coup)
 
 
     ga.update() #création de tout l'affichage graphique

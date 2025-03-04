@@ -27,8 +27,14 @@ class SceneDroite:
         if self.game.timer_on :
             if self.game.couleur_joueur == 'noir':
                 self.timer_noir -=1
+                if self.timer_noir == 0 :
+                    self.game.timer_on = False
+                    self.game.afficher_mat = True
             else :
                 self.timer_blanc -= 1
+                if self.timer_blanc == 0 :
+                    self.game.timer_on = False
+                    self.game.afficher_mat = True
 
 
     def maj_temps_minute(self):
@@ -45,14 +51,6 @@ class SceneDroite:
         self.piece_blanc_manger.update()
         self.afficher_coup_texte()
 
-    def afficher_piece_capturer(self):
-        L_piece = self.piece_noir_manger
-        for i in range(len(L_piece)):
-            L_piece[i].rect.x ,L_piece[i].rect.y= self.origine[0]+ i*L_piece[i].rect[2],500
-
-        for elem in L_piece:
-            self.screen.blit(elem.image, elem.rect)
-
     def reset_scene_droite(self):
         self.timer_noir = 30 * 60
         self.timer_blanc = 30 * 60
@@ -67,7 +65,9 @@ class SceneDroite:
             coup = self.coup_joue_blanc[-1]
         else :
             coup = self.coup_joue_noir[-1]
-
+        print(self.coup_joue_noir)
+        print(self.coup_joue_blanc)
+        print(coup)
         texte = Texte(self.screen,coup,couleur)
         for elem in self.all_texte :
             if elem.couleur == couleur:
@@ -101,10 +101,11 @@ class Texte:
         alphabet = string.ascii_lowercase
         texte = ''
         dic_Piece_anglais = {'p' : '','d' : 'Q','t' : 'R','r' : 'K','f' : 'B','c': 'C'}
-        case = alphabet[coup[1][0]] + str(coup[1][1])
+        case = alphabet[coup[1][0]] + str(coup[1][1]+1)
         texte += dic_Piece_anglais[coup[0]] + case
         if len(coup) == 3:
             texte += 'x' + dic_Piece_anglais[coup[2]]
+            print('gaming')
         return texte
 
     def changer_position(self):
@@ -151,11 +152,6 @@ class AffichagePionManger:
             x_return = self.screen_height + (((x+5) / 8) * self.width)
             y_return =  (y+6) * self.screen_height / 8
         return (x_return,y_return)
-
-    def creer_image_piece(self):
-        dic = {'pion':None,'cheval':None,'dame':None,'roi':None,'fou':None,'tour':None}
-        for piece,val in dic.items():
-            return
 
     def clear(self):
         self.liste_piece_manger = []

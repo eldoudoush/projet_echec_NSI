@@ -1,3 +1,5 @@
+from time import sleep
+
 import pygame
 from echiquier import Echiquier
 from point import Point
@@ -8,34 +10,37 @@ from parametre import Parametre
 
 class Game:
     def __init__(self,screen):
-        self.all_piece = pygame.sprite.Group()
-        self.piece_blanc = []
-        self.piece_noir = []
-        self.roi_blanc = None
-        self.roi_noir = None
-        self.bot = Bot(self)
-        self.echiquier = Echiquier(screen,self)
-        self.screen = screen
-        self.piece_selectione = None
-        self.couleur_joueur = 'blanc'
-        self.en_menu = True
-        self.premouv = pygame.sprite.Group()
-        self.scene_droite = SceneDroite(screen,self)
-        self.ecran_accueil = Accueil(self.screen)
-        self.rgb = (0,0,0)
-        self.coup_noir = {}
-        self.coup_blanc = {}
-        self.afficher_mat = False
-        self.taille_case = self.screen.get_height() / 8
-        self.timer_on = False
-        self.select_bot = None
-        self.bouton_restart = None
-        self.bouton_restart_rect = None
-        self.parametre = Parametre(self)
-        self.couleur_bot = 'noir'
-        self.draw = False
+        self.all_piece = pygame.sprite.Group() #stock toute les pieces
+        self.piece_blanc = [] #stock toute les pieces blanches
+        self.piece_noir = [] #stock toute les pieces noires
+        self.roi_blanc = None #stock le roi blanc
+        self.roi_noir = None #stock le roi noir
+        self.bot = Bot(self) #crée une class bot
+        self.echiquier = Echiquier(screen,self) # crée l'échiquier
+        self.screen = screen #récupère le screen
+        self.piece_selectione = None #stock la piece selectioné
+        self.couleur_joueur = 'blanc' #stock la couleur du joueur actuelle
+        self.en_menu = True #variable pour savoir l'état du jeu : menu / en partie
+        self.premouv = pygame.sprite.Group() #stock tous les mouvements possibles de la piece selectionner à afficher sur le moment
+        self.scene_droite = SceneDroite(screen,self) #crée l'affichage à droite du jeu
+        self.ecran_accueil = Accueil(self.screen) #crée l'écran d'acceuil
+        self.rgb = (100,150,50) #stock la couleur du fond d'écran pour le menu
+        self.coup_noir = {} #stock tous les coups disponibles pour les noirs
+        self.coup_blanc = {} #stock tous les coups disponibles pour les blancs
+        self.afficher_mat = False #variable qui gère l'échec et mat
+        self.taille_case = self.screen.get_height() / 8 #variable de la taille des case
+        self.timer_on = False #permet de stopper les timer si True
+        self.select_bot = None #permet se savoir quel bot lancer devient alors un int
+        self.bouton_restart = None #stock le bouton restart qui apparait à la fin de la partie
+        self.bouton_restart_rect = None #stock le rectangle bouton restart qui apparait à la fin de la partie
+        self.parametre = Parametre(self) #crée les paramètres du jeu
+        self.couleur_bot = 'noir' #gère la couleur du bot
+        self.draw = False #gère l'égalité
 
     def update(self):
+        """
+        :return: crée l'image à afficher celon l'état du jeu
+        """
         if self.en_menu :
             self.screen.fill(self.rgb)
             # pygame.draw.rect(screen,(42, 206, 166),[0,0,screen.get_width(),screen.get_height()])
@@ -55,7 +60,7 @@ class Game:
 
     def changer_couleur(self):
         """
-        change la couleur du joueur qui joue
+        change la couleur du joueur qui joue et fait jouer le bot
         """
         if self.couleur_joueur == 'blanc':
             self.couleur_joueur = 'noir'
@@ -67,7 +72,7 @@ class Game:
         elif self.couleur_joueur == 'noir':
             self.couleur_joueur = 'blanc'
             self.coup_noir = self.calcul_coup_noir()
-            self.coup_blanc = self.calcul_coup_blanc()
+            self.coup_blanc = self.calcul_coup_blanc(True)
             self.check_mate(self.coup_blanc)
 
         else:
@@ -82,9 +87,9 @@ class Game:
             elif self.select_bot == 1 :
                 self.bot.calcule_coup_aleatoire()
             elif self.select_bot == 2:
-                print(self.bot.calcule_meilleur_coup(self.couleur_joueur))
+                #self.bot.calcule_meilleur_coup(self.couleur_joueur)
+                print(self.bot.jouer_min_max(2, True, self.couleur_joueur))
             elif self.select_bot == 3 :
-                #self.bot.coup_joue_min_max( 3, self.couleur_joueur)
                 print(self.bot.jouer_min_max(3,True,self.couleur_joueur))
 
 
@@ -98,11 +103,11 @@ class Game:
                 pygame.draw.rect(self.screen,jeu[j][i].color,jeu[j][i].rect)
 
     def afficher_deplacement_possible(self):
-        '''
+        """
         :return: affiche tout les delacement possible d'une piece calculer au préalable
-        '''
+        """
         for elem in self.piece_selectione.coup:
-            print(elem)
+            # print(elem)
             x, y = elem
             if self.echiquier.jeu[x][y].piece is None:
                 point = Point(x,y,self.screen,'noir')
@@ -153,7 +158,7 @@ class Game:
         """
             :param roi_mouv: bool
             :param calcul: bool
-            :return: calcule les coup de toute les pieces noires si calcul est True
+            :return: calcule les coups de toute les pieces noires si calcul est True
                      alors il verifie que les coup ne mette pas le roi en echec
                      la fonction renvoie un set de tout les coups
         """
@@ -257,9 +262,8 @@ class Game:
 
     def reset(self):
         """
-        remet permet de remettre a zero le jeu
+        remet permet de remettre à zero le jeu
         """
-        self.en_menu = True
         del self.echiquier
         del self.all_piece
         self.all_piece = pygame.sprite.Group()
@@ -272,15 +276,15 @@ class Game:
         self.afficher_mat = False
         self.piece_selectione = None
         self.couleur_joueur = 'blanc'
-        self.en_menu = True
         self.premouv = pygame.sprite.Group()
         self.coup_noir.clear()
         self.coup_blanc.clear()
         self.afficher_mat = False
         self.timer_on = False
         self.select_bot = None
-
+        self.parametre.est_afficher = False
         self.scene_droite.reset_scene_droite()
+        self.en_menu = True
 
 
     def choix_mode_jeu(self,var):
@@ -293,7 +297,14 @@ class Game:
         self.en_menu = False
         self.timer_on = True
         self.calcul_coup_blanc()
-        if self.couleur_joueur =='blanc':
-            self.couleur_bot = 'noir'
-        else:
-            self.couleur_bot = 'blanc'
+
+        if self.couleur_bot == 'blanc' :
+            if self.select_bot is None:
+                return
+            elif self.select_bot == 1:
+                self.bot.calcule_coup_aleatoire()
+            elif self.select_bot == 2:
+                self.bot.calcule_meilleur_coup(self.couleur_joueur)
+            elif self.select_bot == 3:
+                # self.bot.coup_joue_min_max( 3, self.couleur_joueur)
+                print(self.bot.jouer_min_max(3, True, self.couleur_joueur))

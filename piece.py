@@ -18,11 +18,12 @@ class Pion(pygame.sprite.Sprite):
         else:
             image = 'pieces_echecs/pion_noir.png'
         self.image,self.rect = import_image_resize(image,self.taille_case, self.taille_case,self.taille_case*x,self.taille_case*y)
-        self.compteur_coup = 0
+
         self.coordone = (x,y)
         self.premier_coup = True
         self.echiquier = echiquier
         self.visible = True
+        self.compteur_coup = 0
 
     def maj_position(self):
         """
@@ -71,6 +72,23 @@ class Pion(pygame.sprite.Sprite):
                 ajoute_coup_pas_echec(self, (x-1, y +1), self.echiquier, roi=False,calcul=detect_echec)
 
 
+    def promo_pion(self):
+        x, y = self.coordone
+        couleur = self.color
+        new_piece=Reine(x,y,self.screen,couleur,self.echiquier)
+        if couleur == 'blanc' and y == 0:
+            self.echiquier.game.all_piece.remove(self)
+            self.echiquier.game.piece_blanc.remove(self)
+            self.echiquier.game.all_piece.add(new_piece)
+            self.echiquier.game.piece_blanc.append(new_piece)
+            self.echiquier.jeu[x][y].piece = new_piece
+        if couleur == 'noir' and y == 7:
+            self.echiquier.game.all_piece.remove(self)
+            self.echiquier.game.piece_noir.remove(self)
+            self.echiquier.game.all_piece.add(new_piece)
+            self.echiquier.game.piece_noir.append(new_piece)
+            self.echiquier.jeu[x][y].piece = new_piece
+
 class Cheval(pygame.sprite.Sprite):
 
     def __init__(self,x,y,screen,color,echiquier):
@@ -116,7 +134,7 @@ class Cheval(pygame.sprite.Sprite):
             a,b = elem
             if out_of_board(elem) and self.echiquier.jeu[a][b].piece is None :
                 ajoute_coup_pas_echec(self, (a,b), self.echiquier, roi=False,calcul=detect_echec)
-            elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][b].piece.color != self.color :
+            elif out_of_board(elem) and self.echiquier.jeu[a][b].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (a,b), self.echiquier, roi=False,calcul=detect_echec)
 
 
@@ -449,9 +467,9 @@ class Roi(pygame.sprite.Sprite):
         self.premier_coup = True
         self.coup = []
         self.visible = True
-        self.echec = False
         self.rockD=False
         self.rockG=False
+        self.echec = False
 
     def maj_position(self):
         """
@@ -478,7 +496,6 @@ class Roi(pygame.sprite.Sprite):
 
                 elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][
                     b].piece.color != self.color :
-                    ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True )
                     ajoute_coup_pas_echec(self, elem, self.echiquier, roi=True,calcul=detect_echec )
 
             else:
@@ -493,26 +510,35 @@ class Roi(pygame.sprite.Sprite):
             if self.premier_coup and self.echiquier.jeu[0][7].piece is not None :
                 if self.echiquier.jeu[0][7].piece.piece == 'tour' and self.echiquier.jeu[0][7].piece.premier_coup==True:
                     if self.echiquier.jeu[1][7].piece is None and self.echiquier.jeu[2][7].piece is None and self.echiquier.jeu[3][7].piece is None:
-                        ajoute_coup_pas_echec(self, (1, 7), self.echiquier, roi=True)
+                        ajoute_coup_pas_echec(self, (2, 7), self.echiquier, roi=True)
                         self.rockG=True
+                    else:
+                        self.rockG = False
+
 
             if self.premier_coup and self.echiquier.jeu[7][7].piece is not None :
                 if self.echiquier.jeu[7][7].piece.piece=='tour' and self.echiquier.jeu[7][7].piece.premier_coup==True:
                     if self.echiquier.jeu[5][7].piece is None and self.echiquier.jeu[6][7].piece is None:
                         ajoute_coup_pas_echec(self, (6, 7), self.echiquier, roi=True)
                         self.rockD = True
+                    else:
+                        self.rockD=False
         else:
             if self.premier_coup and self.echiquier.jeu[0][0].piece is not None :
                 if self.echiquier.jeu[0][0].piece.piece == 'tour' and self.echiquier.jeu[0][0].piece.premier_coup==True:
                     if self.echiquier.jeu[1][0].piece is None and self.echiquier.jeu[2][0].piece is None and self.echiquier.jeu[3][0].piece is None:
-                        ajoute_coup_pas_echec(self, (1, 0), self.echiquier, roi=True)
+                        ajoute_coup_pas_echec(self, (2, 0), self.echiquier, roi=True)
                         self.rockG = True
+                    else:
+                        self.rockG = False
 
             if self.premier_coup and self.echiquier.jeu[7][0].piece is not None :
                 if self.echiquier.jeu[7][0].piece.piece == 'tour' and self.echiquier.jeu[7][0].piece.premier_coup==True:
                     if self.echiquier.jeu[5][0].piece is None and self.echiquier.jeu[6][0].piece is None :
                         ajoute_coup_pas_echec(self, (6, 0), self.echiquier, roi=True)
                         self.rockD = True
+                    else:
+                        self.rockD=False
         return self.coup
 
 def out_of_board(a):
@@ -575,3 +601,5 @@ def ajoute_coup_pas_echec(piece,coordonne,echiquier,roi=False,calcul=True):
         return
 
     piece.coup.append(coordonne)
+
+
