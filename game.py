@@ -7,6 +7,7 @@ from scene_droite import SceneDroite
 from accueil import Accueil
 from bot import Bot
 from parametre import Parametre
+import utilitaire.fonction_utile as fct
 
 class Game:
     def __init__(self,screen):
@@ -57,6 +58,7 @@ class Game:
         if self.afficher_mat :
             self.afficher_echec_et_mat()
         self.parametre.update()
+
 
     def changer_couleur(self):
         """
