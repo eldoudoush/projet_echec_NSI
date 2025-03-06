@@ -89,6 +89,8 @@ while running:
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
+            ga.parametre.gestionnaire_de_boite_texte.ajouter_boitetexte(event)
+
             if event.key == pygame.K_SPACE:
                 screen = pygame.display.set_mode((0, 0),pygame.FULLSCREEN)
                 ga = Game(screen)
