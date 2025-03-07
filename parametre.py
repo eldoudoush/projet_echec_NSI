@@ -19,14 +19,17 @@ class Parametre:
         self.choisir_couleur_blanc_rect = [self.x*5 ,self.y*5 ,6*self.x/8,6*self.x/8]
         self.deriere_blanc_rect = [self.x * 5 - self.x / 16, self.y * 5 - self.x / 16, 7 * self.x / 8, 7 * self.x / 8]
         self.redemarer_rect = [self.x *3/2 , self.y * 4.5 , 2 * self.x ,  self.x ]
-        self.redemarer_font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//30)
-        self.redemarer_texte = self.redemarer_font.render("retourner", True, (0, 0, 0))
-        self.redemarer_textedessous = self.redemarer_font.render("au menu", True, (0, 0, 0))
+        self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//30)
+        self.redemarer_texte = self.font.render("retourner", True, (0, 0, 0))
+        self.redemarer_textedessous = self.font.render("au menu", True, (0, 0, 0))
+        self.appliquer_timer_rect = [self.x*5.25,self.y*3.6,self.x,self.y/2]
+        self.font2 = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//50)
+        self.texte_appliquer,self.texte_appliquer_pos = self.font2.render("appliquer", True, (0, 0, 0)),(self.x*5.25,self.y*3.7)
         self.gestionnaire_de_boite_texte = fct.GestionnaireDeBoiteTexte()
-        self.boitetexte_minute_blanc = fct.BoiteTexte(self.screen,'0123456789',2,[self.x*4,self.y*3,self.x/2,self.y/2],texte_originel=str(self.game.scene_droite.timer_blanc//60))
-        self.boitetexte_seconde_blanc = fct.BoiteTexte(self.screen,'0123456789',2,[self.x*4.6,self.y*3,self.x/2,self.y/2],texte_originel=str(self.game.scene_droite.timer_blanc%60)+('0' if self.game.scene_droite.timer_blanc%60<10 else ''))
-        self.boitetexte_minute_noir = fct.BoiteTexte(self.screen, '0123456789', 2,[self.x * 5.4, self.y * 3, self.x / 2, self.y / 2],texte_originel=str(self.game.scene_droite.timer_noir//60))
-        self.boitetexte_seconde_noir = fct.BoiteTexte(self.screen, '0123456789', 2,[self.x * 6, self.y * 3, self.x / 2, self.y / 2],texte_originel=str(self.game.scene_droite.timer_noir%60)+('0' if self.game.scene_droite.timer_noir%60<10 else ''))
+        self.boitetexte_minute_blanc = fct.BoiteTexte(self.screen,'0123456789',2,[self.x*4,self.y*3,self.x/2,self.y/2],texte_originel=str(cst.timer_blanc//60))
+        self.boitetexte_seconde_blanc = fct.BoiteTexte(self.screen,'0123456789',2,[self.x*4.6,self.y*3,self.x/2,self.y/2],texte_originel=('0' if cst.timer_blanc % 60 < 10 else '') +str(cst.timer_blanc % 60) )
+        self.boitetexte_minute_noir = fct.BoiteTexte(self.screen, '0123456789', 2,[self.x * 5.4, self.y * 3, self.x / 2, self.y / 2],texte_originel=str(cst.timer_noir//60))
+        self.boitetexte_seconde_noir = fct.BoiteTexte(self.screen, '0123456789', 2,[self.x * 6, self.y * 3, self.x / 2, self.y / 2],texte_originel=('0' if cst.timer_noir % 60 < 10 else '') +str(cst.timer_noir % 60))
         self.gestionnaire_de_boite_texte.append(self.boitetexte_seconde_blanc)
         self.gestionnaire_de_boite_texte.append(self.boitetexte_minute_blanc)
         self.gestionnaire_de_boite_texte.append(self.boitetexte_seconde_noir)
@@ -38,6 +41,10 @@ class Parametre:
     def cliquer_parametre(self,pos):
         if self.icon_rect.collidepoint(pos) :
             self.est_afficher = not self.est_afficher
+            self.boitetexte_minute_blanc.changer_texte( str(cst.timer_blanc // 60))
+            self.boitetexte_seconde_blanc.changer_texte(('0' if cst.timer_blanc % 60 < 10 else '') +str(cst.timer_blanc % 60) )
+            self.boitetexte_minute_noir.changer_texte( str(cst.timer_noir // 60))
+            self.boitetexte_seconde_noir.changer_texte( ('0' if cst.timer_noir % 60 < 10 else '') +str(cst.timer_noir % 60) )
         if self.est_afficher :
             self.cliquer_couleur_choisie(pos)
             if not self.game.en_menu :
@@ -46,7 +53,10 @@ class Parametre:
                     print('reset')
             else:
                 self.gestionnaire_de_boite_texte.activer_boitetexte(pos)
-
+                if fct.clicker(self.appliquer_timer_rect,pos):
+                    cst.timer_blanc = int(self.boitetexte_seconde_blanc.texte)+int(self.boitetexte_minute_blanc.texte)*60
+                    cst.timer_noir = int(self.boitetexte_seconde_noir.texte) + int(
+                        self.boitetexte_minute_noir.texte) * 60
 
     def cliquer_couleur_choisie(self,pos):
         if self.game.en_menu :
@@ -68,6 +78,8 @@ class Parametre:
 
                 pygame.draw.rect(self.screen, (255,255,255), self.choisir_couleur_blanc_rect)
                 self.gestionnaire_de_boite_texte.uptdate()
+                pygame.draw.rect(self.screen,'blue',self.appliquer_timer_rect,)
+                self.screen.blit(self.texte_appliquer,self.texte_appliquer_pos)
             else:
                 pygame.draw.rect(self.screen,(58,34,10), self.redemarer_rect)
                 self.screen.blit(self.redemarer_texte,(self.redemarer_rect[0]+self.x/5, self.redemarer_rect[1]+self.x/5 ))

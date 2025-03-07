@@ -46,7 +46,7 @@ class Case:
 
 
     def manger_pion(self, piece ,pas_suprimer=False):
-        # print(self.piece)
+        #
 
         if self.piece.color == 'blanc':
             if not pas_suprimer:

@@ -7,14 +7,14 @@ class Echiquier:
         self.screen = screen
         self.screen_with = screen.get_height()
         self.game = game
-        self.all_case = []
-        self.jeu = [[None for i in range(8)] for j in range(8)]
+        self.all_case = [] #stock toute les cases
+        self.jeu = [[None for i in range(8)] for j in range(8)] #initialise les 64 cases
         for i in range(8):
             for j in range(8):
                 case = Case(j, i, self.screen,self)
                 self.jeu[j][i] = case
                 self.all_case.append(case)
-        self.création_piece()
+        self.création_piece() # crée les pieces
 
     def création_piece(self):
         """

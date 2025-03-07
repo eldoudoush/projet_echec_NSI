@@ -20,6 +20,9 @@ class Bot:
         self.game.changer_couleur()
 
     def calcule_meilleur_coup(self,couleur):
+        """
+        joue le coup qui prend la piece qui a la plus grande valeur
+        """
         meilleur_coup_score = -inf
         liste_coup_renvoye = []
 
@@ -58,6 +61,13 @@ class Bot:
 
 
     def min_max(self,d,est_maximisant,couleur,depht):
+        """
+        :param d: profondeur de l'arbre minmax
+        :param est_maximisant: bool
+        :param couleur: noir ou blanc
+        :param depht: valeur qui suit la profondeur actuelle
+        permet de calculer le meilleur coup via un arbre minmax
+        """
         if depht == d :
             return valeur_coup(self)
 
@@ -90,6 +100,12 @@ class Bot:
             return meilleur_score
 
     def jouer_min_max(self,d,est_maximisant,couleur):
+        """
+        :param d: profondeur
+        :param est_maximisant: bool
+        :param couleur: noir ou blanc
+        permet d'utiliser la fonction minmax afin de jouer un coup
+        """
         self.coup_min_max.clear()
         meilleur_move = []
         meilleur_score = -inf

@@ -33,6 +33,10 @@ class BoiteTexte:
         pygame.draw.rect(self.screen, 'black', self.rect, 3)
         self.screen.blit(self.texte_afficher,self.pos_texte)
 
+    def changer_texte(self,texte):
+        self.texte = texte
+        self.texte_afficher, self.pos_texte = cree_texte(self.font_size, self.texte, self.pos_texte[0], self.pos_texte[1])
+
     def ajouter_texte(self,input:str):
         if not input in self.restriction:
             return

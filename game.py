@@ -10,6 +10,7 @@ from parametre import Parametre
 import utilitaire.fonction_utile as fct
 
 class Game:
+
     def __init__(self,screen):
         self.all_piece = pygame.sprite.Group() #stock toute les pieces
         self.piece_blanc = [] #stock toute les pieces blanches

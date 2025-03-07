@@ -1,5 +1,6 @@
 import pygame
 import string
+import utilitaire.constante as cst
 
 class SceneDroite:
 
@@ -12,8 +13,8 @@ class SceneDroite:
         self.width = self.screen.get_width() - self.screen_height
         self.pos_blanc = (self.screen_height+((1/8)*self.width),self.screen_height/8)
         self.pos_noir = (self.screen_height+((5/8)*self.width),self.screen_height/8)
-        self.timer_noir = 30*60
-        self.timer_blanc = 30*60
+        self.timer_noir = cst.timer_noir
+        self.timer_blanc = cst.timer_blanc
         self.timer_noir_minute = ''
         self.timer_blanc_minute = ''
         self.coup_joue_blanc = []
@@ -24,6 +25,9 @@ class SceneDroite:
         self.all_texte = []
 
     def temp_timer_reduction(self):
+        """
+
+        """
         if self.game.timer_on :
             if self.game.couleur_joueur == 'noir':
                 self.timer_noir -=1
