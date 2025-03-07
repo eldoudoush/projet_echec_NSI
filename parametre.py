@@ -12,7 +12,7 @@ class Parametre:
         self.game = game
         self.x = self.screen_width/8
         self.y = self.screen_height/8
-        self.icon_image,self.icon_rect = fct.import_image_resize('image_parametre/engrenage_parametre.png',self.screen_width//8,self.screen_width//8,7*self.screen_width//8,self.y//4)
+        self.icon_image,self.icon_rect = fct.import_image_resize('image_parametre/engrenage_parametre.png',self.screen_width//11,self.screen_width//11,14.5*self.screen_width//16,self.y//16)
         self.interface_image,self.interface_rect  = fct.import_image_resize('image_parametre/parametre_bg.png',6*self.screen_width//8,6*self.screen_height//8,self.screen_width//8,self.screen_height//8)
         self.choisir_couleur_noir_rect = [self.x*4 ,self.y*5 ,6*self.x/8,6*self.x/8]
         self.deriere_noir_rect = [self.x*4-self.x/16 ,self.y*5-self.x/16 ,7*self.x/8,7*self.x/8]
@@ -57,6 +57,13 @@ class Parametre:
                     cst.timer_blanc = int(self.boitetexte_seconde_blanc.texte)+int(self.boitetexte_minute_blanc.texte)*60
                     cst.timer_noir = int(self.boitetexte_seconde_noir.texte) + int(
                         self.boitetexte_minute_noir.texte) * 60
+                    self.boitetexte_minute_blanc.changer_texte( str(cst.timer_blanc // 60))
+                    self.boitetexte_seconde_blanc.changer_texte(('0' if cst.timer_blanc % 60 < 10 else '') +str(cst.timer_blanc % 60) )
+                    self.boitetexte_minute_noir.changer_texte( str(cst.timer_noir // 60))
+                    self.boitetexte_seconde_noir.changer_texte( ('0' if cst.timer_noir % 60 < 10 else '') +str(cst.timer_noir % 60) )
+                    self.game.scene_droite.timer_blanc = cst.timer_blanc
+                    self.game.scene_droite.timer_noir = cst.timer_noir
+
 
     def cliquer_couleur_choisie(self,pos):
         if self.game.en_menu :
