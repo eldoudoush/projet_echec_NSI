@@ -24,11 +24,14 @@ class Case:
         :param replacer_pion: bool
         :return: change le pion de la case par celui pris en paramètre,
         si pas_suprimer alors n'applique pas les modifications pour le supprimer du jeu
-        si replacer_pion alors remplace le pion de la possition precedente de la piece par un None
+        si pas replacer_pion alors remplace le pion de la possition precedente de la piece par un None
         """
         self.piece = piece
         if not replacer_pion :
             self.echiquier.jeu[piece.coordone[0]][piece.coordone[1]].piece = None
+            if not self.piece is None and self.piece.piece == 'pion':
+                self.piece.premier_coup = False
+                self.piece.compteur_coup += 1
         piece.coordone = self.coordone
         piece.maj_position()
 
@@ -40,16 +43,16 @@ class Case:
             else:
                 self.echiquier.game.scene_droite.coup_joue_noir.append((piece.piece[0],piece.coordone))
                 self.echiquier.game.scene_droite.cree_texte(piece.color)
-        if not self.piece is None and self.piece.piece == 'pion':
-            self.piece.premier_coup = False
+
 
     def manger_pion(self, piece ,pas_suprimer=False):
-        # print(self.piece)
+        #
+
         if self.piece.color == 'blanc':
             if not pas_suprimer:
                 self.echiquier.game.scene_droite.piece_noir_manger.creer_texte(self.piece)
 
-                self.echiquier.game.scene_droite.coup_joue_blanc.append((piece.piece[0],piece.coordone,self.piece.piece[0]))
+                self.echiquier.game.scene_droite.coup_joue_noir.append((piece.piece[0],self.coordone,self.piece.piece[0]))
                 self.echiquier.game.scene_droite.cree_texte(piece.color)
 
             self.echiquier.game.piece_blanc.remove(self.piece)
@@ -57,7 +60,7 @@ class Case:
             if not pas_suprimer:
                 self.echiquier.game.scene_droite.piece_blanc_manger.creer_texte(self.piece)
 
-                self.echiquier.game.scene_droite.coup_joue_noir.append((piece.piece[0],piece.coordone,self.piece.piece[0]))
+                self.echiquier.game.scene_droite.coup_joue_blanc.append((piece.piece[0],self.coordone,self.piece.piece[0]))
                 self.echiquier.game.scene_droite.cree_texte(piece.color)
 
             self.echiquier.game.piece_noir.remove(self.piece)
@@ -69,6 +72,7 @@ class Case:
 
         if self.piece.piece == 'pion':
             self.piece.premier_coup = False
+            self.piece.compteur_coup += 1
 
         piece.coordone = self.coordone
         piece.maj_position()

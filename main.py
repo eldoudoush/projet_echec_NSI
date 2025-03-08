@@ -38,7 +38,7 @@ while running:
         elif event.type == pygame.MOUSEBUTTONDOWN: #click de la souri
 
 
-            if ga.en_menu:
+            if ga.en_menu and not ga.parametre.est_afficher:
                 if ga.ecran_accueil.play_button0_rect.collidepoint(event.pos):
                     ga.choix_mode_jeu(None)
                 elif ga.ecran_accueil.play_button1_rect.collidepoint(event.pos):
@@ -90,6 +90,8 @@ while running:
 
         elif event.type == pygame.KEYDOWN : #quand un boutton est appuyer
 
+            ga.parametre.gestionnaire_de_boite_texte.ajouter_boitetexte(event)
+
             if event.key == pygame.K_SPACE:
                 screen = pygame.display.set_mode((0, 0),pygame.FULLSCREEN)
                 ga = Game(screen)
@@ -114,10 +116,8 @@ while running:
 
 
             elif event.key == pygame.K_h:
-                if ga.couleur_joueur == 'noir':
-                    ga.couleur_joueur = 'blanc'
-                else:
-                    ga.couleur_joueur = 'noir'
+                print(ga.scene_droite.coup_joue_blanc)
+                print(ga.scene_droite.coup_joue_noir)
 
             elif event.key == pygame.K_l:
                 ga.afficher_mat = True

@@ -35,6 +35,7 @@ class Accueil:
 
          self.font = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//30)
          self.font_petite = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width//37)
+         self.font_petite2 = pygame.font.Font('pieces_echecs/gau_font_cube/GAU_cube_B.TTF', self.screen_width // 45)
 
          self.texte_surface = self.font.render("jeu d'echec de julian et Maxence", True, (0, 0, 0))
          self.texte_surface_rect = self.texte_surface.get_rect()
@@ -48,7 +49,7 @@ class Accueil:
          self.texte_surface0_rect.y = screen.get_height()/3 + 0.3 * self.play_button1_rect[3]
          self.all_texte.append((self.texte_surface0, self.texte_surface0_rect))
 
-         self.texte_surface1 = self.font_petite.render(" bot debile ", True, (0, 0, 0))
+         self.texte_surface1 = self.font_petite2.render(" bot aleatoire ", True, (0, 0, 0))
          self.texte_surface1_rect = self.texte_surface.get_rect()
          self.texte_surface1_rect.x = screen.get_width() / 7
          self.texte_surface1_rect.y = screen.get_height() / 3 + 1.3 * self.play_button1_rect[3]

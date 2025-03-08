@@ -23,6 +23,7 @@ class Pion(pygame.sprite.Sprite):
         self.premier_coup = True
         self.echiquier = echiquier
         self.visible = True
+        self.compteur_coup = 0
 
     def maj_position(self):
         """
@@ -74,8 +75,7 @@ class Pion(pygame.sprite.Sprite):
     def promo_pion(self):
         x, y = self.coordone
         couleur = self.color
-        truc=Reine(x,y,self.screen,couleur,self.echiquier)
-        new_piece=truc
+        new_piece=Reine(x,y,self.screen,couleur,self.echiquier)
         if couleur == 'blanc' and y == 0:
             self.echiquier.game.all_piece.remove(self)
             self.echiquier.game.piece_blanc.remove(self)
@@ -134,7 +134,7 @@ class Cheval(pygame.sprite.Sprite):
             a,b = elem
             if out_of_board(elem) and self.echiquier.jeu[a][b].piece is None :
                 ajoute_coup_pas_echec(self, (a,b), self.echiquier, roi=False,calcul=detect_echec)
-            elif out_of_board(elem) and not self.echiquier.jeu[a][b].piece is None and self.echiquier.jeu[a][b].piece.color != self.color :
+            elif out_of_board(elem) and self.echiquier.jeu[a][b].piece.color != self.color :
                 ajoute_coup_pas_echec(self, (a,b), self.echiquier, roi=False,calcul=detect_echec)
 
 
