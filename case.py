@@ -75,25 +75,15 @@ class Case:
 
 
 
-    def rock_noir(self,click,tour):
-        if click==(3,3):
-            self.changer_pion(tour)
-
-
-    def rock_noir_bis(self,click,rocks,king):
-        if king.color=='noir' and not king.echec:
-            if king.rockG and click==(0,1):
-                ...
-                #bouger tour en (0,2)
-
-            elif king.rockD and click==(0,6):
-                ...
-                #bouger tour en (0,5)
-        elif king.color == 'blanc' and not king.echec:
-            if king.rockG and click==(7,1):
-                ...
-            # bouger tour en (7,2)
-            elif king.rockD and click==(7,6):
-                ...
-        # bouger tour en (7,5)
+    def rock(self,click,king,truc):
+        if king.color == 'blanc':
+            if king.rockG and click==(2,7):
+                truc.echiquier.jeu[3][7].changer_pion(truc.echiquier.jeu[0][7].piece)
+            elif king.rockD and click==(6,7):
+                truc.echiquier.jeu[5][7].changer_pion(truc.echiquier.jeu[7][7].piece)
+        elif king.color == 'noir':
+            if king.rockG and click == (2, 0):
+                truc.echiquier.jeu[3][0].changer_pion(truc.echiquier.jeu[0][0].piece)
+            elif king.rockD and click == (6, 0):
+                truc.echiquier.jeu[5][0].changer_pion(truc.echiquier.jeu[7][0].piece)
 

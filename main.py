@@ -57,7 +57,6 @@ while running:
                 print(click_case)
                 if ga.piece_selectione is None:
                     for elem in ga.echiquier.all_case :
-                        #ga.echiquier.jeu[5][5].rock_noir(click_case,ga.echiquier.jeu[0][0].piece)
                         if elem.coordone == click_case and not elem.piece is None and elem.piece.color == ga.couleur_joueur:
                             print(elem.piece)
                             ga.changer_piece_selectionner(elem.piece)
@@ -65,6 +64,8 @@ while running:
                     if click_case in ga.piece_selectione.coup :
                         elem = ga.echiquier.jeu[click_case[0]][click_case[1]]
                         if elem.piece is None:
+                            if ga.piece_selectione.piece=='roi':
+                                elem.rock(click_case,ga.piece_selectione,ga)
                             elem.changer_pion(ga.piece_selectione)
                             ga.changer_couleur()
                             if ga.piece_selectione.piece == 'pion' :
