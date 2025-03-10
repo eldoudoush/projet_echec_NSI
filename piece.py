@@ -1,6 +1,7 @@
 import pygame
 from utilitaire.fonction_utile import import_image_resize
 
+
 class Pion(pygame.sprite.Sprite):
 
     def __init__(self,x,y,screen,color,echiquier):
@@ -24,6 +25,7 @@ class Pion(pygame.sprite.Sprite):
         self.echiquier = echiquier
         self.visible = True
         self.compteur_coup = 0
+        self.ep = False
 
     def maj_position(self):
         """
@@ -55,6 +57,14 @@ class Pion(pygame.sprite.Sprite):
                 ajoute_coup_pas_echec(self, (x+1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
             if out_of_board((x-1,y -1)) and not self.echiquier.jeu[x-1][y -1].piece is None and self.echiquier.jeu[x-1][y -1].piece.color != self.color:
                 ajoute_coup_pas_echec(self, (x-1, y - 1), self.echiquier, roi=False,calcul=detect_echec)
+            if out_of_board((x - 1, y)) and not self.echiquier.jeu[x - 1][y].piece is None and self.echiquier.jeu[x - 1][y].piece.color != self.color:
+                ajoute_coup_pas_echec(self, (x - 1, y - 1), self.echiquier, roi=False, calcul=detect_echec)
+                self.ep=True
+            elif out_of_board((x + 1, y)) and not self.echiquier.jeu[x + 1][y].piece is None and self.echiquier.jeu[x + 1][y].piece.color != self.color:
+                ajoute_coup_pas_echec(self, (x + 1, y - 1), self.echiquier, roi=False, calcul=detect_echec)
+                self.ep=True
+            else:
+                self.ep=False
 
         else :
             if self.premier_coup:
@@ -70,9 +80,22 @@ class Pion(pygame.sprite.Sprite):
                 ajoute_coup_pas_echec(self, (x+1, y +1), self.echiquier, roi=False,calcul=detect_echec)
             if out_of_board((x-1,y +1)) and not self.echiquier.jeu[x-1][y +1].piece is None and self.echiquier.jeu[x-1][y +1].piece.color != self.color:
                 ajoute_coup_pas_echec(self, (x-1, y +1), self.echiquier, roi=False,calcul=detect_echec)
+            if out_of_board((x - 1, y)) and not self.echiquier.jeu[x - 1][y].piece is None and self.echiquier.jeu[x - 1][y].piece.color != self.color:
+                if self.echiquier.jeu[x - 1][y].piece in self.echiquier.game.show_ep():
+                    ajoute_coup_pas_echec(self, (x - 1, y + 1), self.echiquier, roi=False, calcul=detect_echec)
+                    self.ep=True
+            elif out_of_board((x + 1, y)) and not self.echiquier.jeu[x + 1][y].piece is None and self.echiquier.jeu[x + 1][y].piece.color != self.color:
+                if self.echiquier.jeu[x + 1][y].piece in self.echiquier.game.show_ep():
+                    ajoute_coup_pas_echec(self, (x + 1, y + 1), self.echiquier, roi=False, calcul=detect_echec)
+                    self.ep=True
+            else:
+                self.ep=False
 
 
     def promo_pion(self):
+        '''
+        :return: promeut le pion en reine
+        '''
         x, y = self.coordone
         couleur = self.color
         new_piece=Reine(x,y,self.screen,couleur,self.echiquier)
@@ -88,6 +111,28 @@ class Pion(pygame.sprite.Sprite):
             self.echiquier.game.all_piece.add(new_piece)
             self.echiquier.game.piece_noir.append(new_piece)
             self.echiquier.jeu[x][y].piece = new_piece
+
+    def en_passant(self,click):
+        '''
+        :param click: click
+        :return: permet d'utiliser la prise en passant
+        '''
+        if self.ep:
+            x,y=self.coordone
+            if self.color=='blanc':
+                if click==(x-1,y-1):
+                    self.echiquier.game.all_piece.remove(self.echiquier.jeu[x - 1][y].piece)
+                    self.echiquier.game.piece_noir.remove(self.echiquier.jeu[x - 1][y].piece)
+                if click==(x+1,y-1):
+                    self.echiquier.game.all_piece.remove(self.echiquier.jeu[x + 1][y].piece)
+                    self.echiquier.game.piece_noir.remove(self.echiquier.jeu[x + 1][y].piece)
+            if self.color=='noir':
+                if click==(x-1,y+1):
+                    self.echiquier.game.all_piece.remove(self.echiquier.jeu[x - 1][y].piece)
+                    self.echiquier.game.piece_blanc.remove(self.echiquier.jeu[x - 1][y].piece)
+                if click==(x+1,y+1):
+                    self.echiquier.game.all_piece.remove(self.echiquier.jeu[x + 1][y].piece)
+                    self.echiquier.game.piece_blanc.remove(self.echiquier.jeu[x + 1][y].piece)
 
 class Cheval(pygame.sprite.Sprite):
 

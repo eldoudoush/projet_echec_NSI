@@ -38,6 +38,7 @@ class Game:
         self.parametre = Parametre(self) #crée les paramètres du jeu
         self.couleur_bot = 'noir' #gère la couleur du bot
         self.draw = False #gère l'égalité
+        self.liste_ep = [] #gère les pièces que l'on peut en passant
 
     def update(self):
         """
@@ -311,3 +312,21 @@ class Game:
             elif self.select_bot == 3:
                 # self.bot.coup_joue_min_max( 3, self.couleur_joueur)
                 print(self.bot.jouer_min_max(3, True, self.couleur_joueur))
+
+
+    def piece_ep(self, click, pion):
+        '''
+        :param click: click case
+        :param pion: pion qui bouge
+        :return: regarde si le pion a avancer de 2 case pour le mettre dans la liste des pièces pouvant se faire en passant
+        '''
+        self.liste_ep.clear()
+        x,y=pion.coordone
+        if click==(x,y+2) or click==(x,y-2):
+            self.liste_ep.append(pion)
+
+    def show_ep(self):
+        '''
+        :return: renvoie la liste des pièces qui viennent de bouger de deux donc qui peuvent se faire en passant
+        '''
+        return self.liste_ep

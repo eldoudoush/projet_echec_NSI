@@ -66,10 +66,12 @@ while running:
                         if elem.piece is None:
                             if ga.piece_selectione.piece=='roi':
                                 elem.rock(click_case,ga.piece_selectione,ga)
+                            if ga.piece_selectione.piece == 'pion' :
+                                ga.piece_selectione.en_passant(click_case)
+                                ga.piece_ep(click_case,ga.piece_selectione)
+                                ga.piece_selectione.premier_coup = False
                             elem.changer_pion(ga.piece_selectione)
                             ga.changer_couleur()
-                            if ga.piece_selectione.piece == 'pion' :
-                                ga.piece_selectione.premier_coup = False
                             ga.changer_piece_selectionner(None)
 
                         else:

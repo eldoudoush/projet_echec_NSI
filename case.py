@@ -79,15 +79,20 @@ class Case:
 
 
 
-    def rock(self,click,king,truc):
+    def rock(self,click,king,game):
+        '''
+        :param click: destination du roi
+        :param king: roi
+        :param game: game
+        :return: déplace la tour à la bonne place si le roi fait un rock
+        '''
         if king.color == 'blanc':
             if king.rockG and click==(2,7):
-                truc.echiquier.jeu[3][7].changer_pion(truc.echiquier.jeu[0][7].piece)
+                game.echiquier.jeu[3][7].changer_pion(game.echiquier.jeu[0][7].piece)
             elif king.rockD and click==(6,7):
-                truc.echiquier.jeu[5][7].changer_pion(truc.echiquier.jeu[7][7].piece)
+                game.echiquier.jeu[5][7].changer_pion(game.echiquier.jeu[7][7].piece)
         elif king.color == 'noir':
             if king.rockG and click == (2, 0):
-                truc.echiquier.jeu[3][0].changer_pion(truc.echiquier.jeu[0][0].piece)
+                game.echiquier.jeu[3][0].changer_pion(game.echiquier.jeu[0][0].piece)
             elif king.rockD and click == (6, 0):
-                truc.echiquier.jeu[5][0].changer_pion(truc.echiquier.jeu[7][0].piece)
-
+                game.echiquier.jeu[5][0].changer_pion(game.echiquier.jeu[7][0].piece)
